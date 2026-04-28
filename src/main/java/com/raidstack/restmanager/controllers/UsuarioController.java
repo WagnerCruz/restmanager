@@ -29,47 +29,47 @@ public class UsuarioController {
 
     @GetMapping("/usuarios")
     public ResponseEntity<List<UsuarioDTO>> getUsuarios() {
-        LOGGER.info("Request received to fetch all usuarios");
+        LOGGER.info("Retorna uma lista dos usuários cadastrados na base");
         List<UsuarioDTO> usuarios = usuarioService.findAll();
-        LOGGER.info("Successfully fetched {} usuarios", usuarios.size());
+        LOGGER.info("Retorno com sucesso de {} usuarios", usuarios.size());
         return ResponseEntity.ok(usuarios);
     }
 
      @GetMapping("/usuarios/login")
     public ResponseEntity<UsuarioDTO> getUsuarioByLogin(String login) {
-         LOGGER.info("Request received to fetch usuario by login {}", login);
+         LOGGER.info("Retorna os dados do usuário de acordo com o login. {}", login);
          UsuarioDTO usuarioDTO = usuarioService.findByLogin(login);
          if (usuarioDTO != null) {
-             LOGGER.info("Successfully fetched usuario with login {}", login);
+             LOGGER.info("Usuário encontrado com sucesso. {}", login);
              return ResponseEntity.ok(usuarioDTO);
          } else {
-             LOGGER.warn("Usuario with login {} not found", login);
+             LOGGER.warn("Usuário de login {} não encontrado", login);
          }
             return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/usuarios/criar")
     public ResponseEntity<UsuarioDTO> criarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
-        LOGGER.info("Request received to create a new usuario with login {}", usuarioDTO.login());
+        LOGGER.info("Cria um novo usuário com o login: {}", usuarioDTO.login());
         Integer flagCriado = usuarioService.criarUsuario(usuarioDTO);
         if (flagCriado > 0) {
-            LOGGER.info("Successfully created usuario with login {}", usuarioDTO.login());
+            LOGGER.info("Usuário criado com sucesso. Login: {}", usuarioDTO.login());
             return ResponseEntity.status(201).build();
         } else {
-            LOGGER.error("Failed to create usuario with login {}", usuarioDTO.login());
+            LOGGER.error("Erro ao criar usuário com login: {}", usuarioDTO.login());
             return ResponseEntity.status(500).build();
         }
     }
 
     @PutMapping("/usuarios/atualizar")
     public ResponseEntity<UsuarioDTO> atualizarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
-        LOGGER.info("Request received to update usuario with id {}", usuarioDTO.id());
+        LOGGER.info("Atualiza o usuário do id: {}", usuarioDTO.id());
         Integer flagAtualizado = usuarioService.atualizarUsuario(usuarioDTO);
         if (flagAtualizado > 0) {
-            LOGGER.info("Successfully updated usuario with id {}", usuarioDTO.id());
+            LOGGER.info("Usuário atualizado com sucesso Id: {}", usuarioDTO.id());
             return ResponseEntity.ok().build();
         } else {
-            LOGGER.error("Failed to update usuario with id {}", usuarioDTO.id());
+            LOGGER.error("Erro ao atualizar usuário com id: {}", usuarioDTO.id());
             return ResponseEntity.status(500).build();
         }
     }
