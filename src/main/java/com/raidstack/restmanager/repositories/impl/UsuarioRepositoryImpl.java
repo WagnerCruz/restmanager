@@ -19,8 +19,8 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
 
     @Override
     public Integer criarUsuario(Usuario usuario) {
-        return this.jdbcClient.sql("INSERT INTO USUARIOS (nome, cpf, email, login, senha, endereco, numero) " +
-                        "VALUES (:nome, :cpf, :email, :login, :senha, :endereco, :numero)")
+        return this.jdbcClient.sql("INSERT INTO USUARIOS (nome, cpf, email, login, senha, endereco, numero, flag_proprietario) " +
+                        "VALUES (:nome, :cpf, :email, :login, :senha, :endereco, :numero, :flag_proprietario)")
                 .param("nome", usuario.getNome())
                 .param("cpf", usuario.getCpf())
                 .param("email", usuario.getEmail())
@@ -28,12 +28,15 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
                 .param("senha", usuario.getSenha())
                 .param("endereco", usuario.getEndereco())
                 .param("numero", usuario.getNumero())
+                .param("flag_proprietario", usuario.isFlagProprietario())
                 .update();
     }
 
     @Override
     public Integer atualizarUsuario(Usuario usuario) {
-        return this.jdbcClient.sql("UPDATE USUARIOS SET nome = :nome, cpf = :cpf, email = :email, login = :login, senha = :senha, endereco = :endereco, numero = :numero WHERE id = :id")
+        return this.jdbcClient.sql("UPDATE USUARIOS SET nome = :nome, cpf = :cpf, email = :email, login = :login, " +
+                        "senha = :senha, endereco = :endereco, numero = :numero, flag_proprietario = :flag_proprietario " +
+                        "WHERE id = :id")
                 .param("id", usuario.getId())
                 .param("nome", usuario.getNome())
                 .param("cpf", usuario.getCpf())
@@ -42,6 +45,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
                 .param("senha", usuario.getSenha())
                 .param("endereco", usuario.getEndereco())
                 .param("numero", usuario.getNumero())
+                .param("flag_proprietario", usuario.isFlagProprietario())
                 .update();
     }
 
