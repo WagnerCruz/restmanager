@@ -1,0 +1,204 @@
+openapi: 3.1.0
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8099
+  description: Generated server url
+paths:
+  /v1/usuarios:
+    get:
+      tags:
+      - usuario-controller
+      operationId: getUsuarios
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UsuarioVO"
+    put:
+      tags:
+      - usuario-controller
+      operationId: atualizarUsuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioAtualizarDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+    post:
+      tags:
+      - usuario-controller
+      operationId: criarUsuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioCriarDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags:
+      - usuario-controller
+      operationId: deletarUsuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioAtualizarDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+  /v1/usuarios/senha:
+    put:
+      tags:
+      - usuario-controller
+      operationId: atualizarSenhaUsuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioSenhaDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+  /v1/usuarios/nome:
+    post:
+      tags:
+      - usuario-controller
+      operationId: getUsuarioByNome
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioBuscarDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UsuarioVO"
+  /v1/usuarios/login:
+    post:
+      tags:
+      - usuario-controller
+      operationId: getValidaUsuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioSenhaDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    UsuarioAtualizarDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        nome:
+          type: string
+        cpf:
+          type: string
+        email:
+          type: string
+        login:
+          type: string
+        endereco:
+          type: string
+        numero:
+          type: integer
+          format: int32
+        flagProprietario:
+          type: string
+      required:
+      - nome
+    UsuarioSenhaDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        cpf:
+          type: string
+        login:
+          type: string
+        senha:
+          type: string
+      required:
+      - senha
+    UsuarioCriarDTO:
+      type: object
+      properties:
+        nome:
+          type: string
+        cpf:
+          type: string
+        email:
+          type: string
+        login:
+          type: string
+        senha:
+          type: string
+        endereco:
+          type: string
+        numero:
+          type: integer
+          format: int32
+        flagProprietario:
+          type: string
+      required:
+      - nome
+    UsuarioBuscarDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        nome:
+          type: string
+        email:
+          type: string
+        login:
+          type: string
+    UsuarioVO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        nome:
+          type: string
+        cpf:
+          type: string
+        email:
+          type: string
+        login:
+          type: string
+        endereco:
+          type: string
+        numero:
+          type: integer
+          format: int32
+        flagProprietario:
+          type: string
+        dataAtualizacao:
+          type: string
+          format: date-time
