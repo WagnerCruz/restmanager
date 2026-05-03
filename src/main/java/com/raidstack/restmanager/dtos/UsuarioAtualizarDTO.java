@@ -4,15 +4,14 @@ import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 
-public record UsuarioDTO(
+public record UsuarioAtualizarDTO(
 
+        Integer id,
         @NotNull(message = "Nome é obrigatório")
-        Long id,
         String nome,
         String cpf,
         String email,
         String login,
-        String senha,
         String endereco,
         int numero,
         String flagProprietario

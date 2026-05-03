@@ -1,13 +1,17 @@
 package com.raidstack.restmanager.controllers;
 
-import com.raidstack.restmanager.dtos.UsuarioDTO;
-import com.raidstack.restmanager.entity.Usuario;
+import com.raidstack.restmanager.dtos.UsuarioAtualizarDTO;
+import com.raidstack.restmanager.dtos.UsuarioBuscarDTO;
+import com.raidstack.restmanager.dtos.UsuarioCriarDTO;
+import com.raidstack.restmanager.dtos.UsuarioSenhaDTO;
 import com.raidstack.restmanager.services.UsuarioService;
+import com.raidstack.restmanager.vo.UsuarioVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/usuarios")
 public class UsuarioController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioController.class);
@@ -27,29 +31,42 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @GetMapping("/usuarios")
-    public ResponseEntity<List<UsuarioDTO>> getUsuarios() {
+    @GetMapping
+    public ResponseEntity<List<UsuarioVO>> getUsuarios() {
         LOGGER.info("Retorna uma lista dos usuários cadastrados na base");
-        List<UsuarioDTO> usuarios = usuarioService.findAll();
+        List<UsuarioVO> usuarios = usuarioService.findAll();
         LOGGER.info("Retorno com sucesso de {} usuarios", usuarios.size());
         return ResponseEntity.ok(usuarios);
     }
 
-     @GetMapping("/usuarios/login")
-    public ResponseEntity<UsuarioDTO> getUsuarioByLogin(String login) {
-         LOGGER.info("Retorna os dados do usuário de acordo com o login. {}", login);
-         UsuarioDTO usuarioDTO = usuarioService.findByLogin(login);
-         if (usuarioDTO != null) {
-             LOGGER.info("Usuário encontrado com sucesso. {}", login);
-             return ResponseEntity.ok(usuarioDTO);
+    @PostMapping("/login")
+    public ResponseEntity<Void> getValidaUsuario(@RequestBody UsuarioSenhaDTO usuarioDTO) {
+         LOGGER.info("Validando login de usuario {}", usuarioDTO.login());
+         Boolean usuarioValido = usuarioService.validarLoginUsuario(usuarioDTO);
+         if (usuarioValido) {
+             LOGGER.info("Login validado com sucesso {}", usuarioDTO.login());
+             return ResponseEntity.noContent().build();
          } else {
-             LOGGER.warn("Usuário de login {} não encontrado", login);
+             LOGGER.warn("Erro: Login ou Senha incorretos {}", usuarioDTO.login());
          }
             return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/usuarios/criar")
-    public ResponseEntity<UsuarioDTO> criarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+    @PostMapping("/nome")
+    public ResponseEntity<UsuarioVO> getUsuarioByNome(@RequestBody UsuarioBuscarDTO usuarioDTO) {
+        LOGGER.info("Retorna os dados do usuário de acordo com o nome. {}", usuarioDTO.nome());
+        UsuarioVO usuarioVO = usuarioService.findByNome(usuarioDTO.nome());
+        if (usuarioVO != null) {
+            LOGGER.info("Usuário encontrado com sucesso. {}", usuarioDTO.nome());
+            return ResponseEntity.ok(usuarioVO);
+        } else {
+            LOGGER.warn("Usuário de login {} não encontrado", usuarioDTO.nome());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> criarUsuario(@RequestBody UsuarioCriarDTO usuarioDTO) {
         LOGGER.info("Cria um novo usuário com o login: {}", usuarioDTO.login());
         Integer flagCriado = usuarioService.criarUsuario(usuarioDTO);
         if (flagCriado > 0) {
@@ -61,8 +78,8 @@ public class UsuarioController {
         }
     }
 
-    @PutMapping("/usuarios/atualizar")
-    public ResponseEntity<UsuarioDTO> atualizarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+    @PutMapping
+    public ResponseEntity<Void> atualizarUsuario(@RequestBody UsuarioAtualizarDTO usuarioDTO) {
         LOGGER.info("Atualiza o usuário do id: {}", usuarioDTO.id());
         Integer flagAtualizado = usuarioService.atualizarUsuario(usuarioDTO);
         if (flagAtualizado > 0) {
@@ -74,9 +91,22 @@ public class UsuarioController {
         }
     }
 
-    @DeleteMapping("/usuarios/deletar")
-    public ResponseEntity<Void> deletarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
-        LOGGER.info("Request received to delete usuario with id {}", usuarioDTO.id());
+    @PutMapping("/senha")
+    public ResponseEntity<Void> atualizarSenhaUsuario(@RequestBody UsuarioSenhaDTO usuarioDTO) {
+        LOGGER.info("Atualiza senha do usuário do id: {}", usuarioDTO.id());
+        Integer flagAtualizado = usuarioService.atualizarSenhaUsuario(usuarioDTO);
+        if (flagAtualizado > 0) {
+            LOGGER.info("Senha atualizado com sucesso Id: {}", usuarioDTO.id());
+            return ResponseEntity.ok().build();
+        } else {
+            LOGGER.error("Erro ao atualizar senha usuário com id: {}", usuarioDTO.id());
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deletarUsuario(@RequestBody UsuarioAtualizarDTO usuarioDTO) {
+        LOGGER.info("Deleta usuário com ID {}", usuarioDTO.id());
         String result = usuarioService.deletarUsuario(usuarioDTO);
         if (result.equals("Usuario deletado com sucesso")) {
             LOGGER.info("Successfully deleted usuario with id {}", usuarioDTO.id());

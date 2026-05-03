@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
    senha VARCHAR(255) NOT NULL,
    endereco VARCHAR(255),
    numero INTEGER,
-   flag_proprietario BOOLEAN DEFAULT FALSE
+   flag_proprietario BOOLEAN DEFAULT FALSE,
+   data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

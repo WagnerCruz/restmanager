@@ -1,14 +1,18 @@
 package com.raidstack.restmanager.services;
 
-import com.raidstack.restmanager.dtos.UsuarioDTO;
+import com.raidstack.restmanager.dtos.UsuarioAtualizarDTO;
+import com.raidstack.restmanager.dtos.UsuarioCriarDTO;
+import com.raidstack.restmanager.dtos.UsuarioSenhaDTO;
 import com.raidstack.restmanager.entity.Usuario;
 import com.raidstack.restmanager.mapper.UsuarioMapper;
 import com.raidstack.restmanager.repositories.UsuarioRepository;
+import com.raidstack.restmanager.vo.UsuarioVO;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -23,35 +27,41 @@ public class UsuarioService {
         this.usuarioMapper = usuarioMapper;
     }
 
-    public UsuarioDTO findById(long id) {
+    public UsuarioAtualizarDTO findById(long id) {
 
-        UsuarioDTO usuarioDTO = null;
-        Optional<Usuario> userById = this.usuarioRepository.findById(id);
+        UsuarioAtualizarDTO usuarioDTO = null;
+        Optional<Usuario> userById = this.usuarioRepository.buscarPorId(id);
         if (userById.isPresent()) {
             usuarioDTO = usuarioMapper.usuarioToUsuarioDTO(userById.get());
         }
         return usuarioDTO;
 
     }
-    public UsuarioDTO findByLogin(String login) {
-        Optional<Usuario> userByLogin = this.usuarioRepository.findByLogin(login);
-        return userByLogin.map(usuarioMapper::usuarioToUsuarioDTO).orElse(null);
+
+    public UsuarioVO findByLogin(String login) {
+        Optional<Usuario> userByLogin = this.usuarioRepository.buscarPorLogin(login);
+        return userByLogin.map(usuarioMapper::usuarioToUsuarioVO).orElse(null);
     }
 
-    public List<UsuarioDTO> findAll() {
-        List<Usuario> usuarios = this.usuarioRepository.findAll(10, 1);
-        List<UsuarioDTO> usuariosDTO = new ArrayList<>();
+    public UsuarioVO findByNome(String nome) {
+        Optional<Usuario> usuario = this.usuarioRepository.buscarPorNome(nome);
+        return usuario.map(usuarioMapper::usuarioToUsuarioVO).orElse(null);
+    }
+
+    public List<UsuarioVO> findAll() {
+        List<Usuario> usuarios = this.usuarioRepository.buscarTodos(10, 1);
+        List<UsuarioVO> usuariosVO = new ArrayList<>();
 
         for (Usuario usuario : usuarios) {
-            usuariosDTO.add(usuarioMapper.usuarioToUsuarioDTO(usuario));
+            usuariosVO.add(usuarioMapper.usuarioToUsuarioVO(usuario));
         }
-        return usuariosDTO;
+        return usuariosVO;
     }
 
-    public Integer criarUsuario(UsuarioDTO usuarioDTO) {
-        Usuario usuario = usuarioMapper.usuarioDTOToUsuario(usuarioDTO);
+    public Integer criarUsuario(UsuarioCriarDTO usuarioDTO) {
+        Usuario usuario = usuarioMapper.usuarioCriarDTOToUsuario(usuarioDTO);
         Integer flagCriado = 0;
-        if (validarUsuarioByCpfEmailLogin(usuarioDTO).isEmpty()) {
+        if (validarUsuarioPorCpfEmailLogin(usuario)) {
             flagCriado = this.usuarioRepository.criarUsuario(usuario);
         }
         if (flagCriado > 0) {
@@ -60,41 +70,50 @@ public class UsuarioService {
         return flagCriado;
     }
 
-    public Integer atualizarUsuario(UsuarioDTO usuarioDTO) {
+    public Integer atualizarUsuario(UsuarioAtualizarDTO usuarioDTO) {
         Usuario usuario = usuarioMapper.usuarioDTOToUsuario(usuarioDTO);
-        if(validarUsuarioByCpfEmailLogin(usuarioDTO).isEmpty()) {
+        if(validarUsuarioPorCpfEmailLogin(usuario)) {
             return this.usuarioRepository.atualizarUsuario(usuario);
         }else{
             return 0;
         }
     }
 
-    public String deletarUsuario(UsuarioDTO usuarioDTO) {
-        Optional<Long> id = this.usuarioRepository.findUsuarioByCPF(usuarioDTO.cpf()).map(Usuario::getId);
-        Integer flagDeletado = this.usuarioRepository.deletarUsuario(id.get());
+    public String deletarUsuario(UsuarioAtualizarDTO usuarioDTO) {
+        Optional<Long> id = this.usuarioRepository.buscarUsuarioPorCPF(usuarioDTO.cpf()).map(Usuario::getId);
+        Integer flagDeletado = 0;
+        if (id.isPresent()) {
+            flagDeletado = this.usuarioRepository.deletarUsuario(id.get());
+        } else {
+            return "Erro Usuario não encontrado";
+        }
         if (flagDeletado > 0) {
             return "Usuario deletado com sucesso";
         }
         return "Erro ao deletar usuario";
     }
 
-    public Integer atualizarSenha(UsuarioDTO usuario) {
-        if (validarUsuario(usuario).isPresent()) {
-            Usuario usuarioEntity = usuarioMapper.usuarioDTOToUsuario(usuario);
-            return this.usuarioRepository.atualizarUsuario(usuarioEntity);
+    public Integer atualizarSenhaUsuario(UsuarioSenhaDTO usuarioDTO) {
+        if (Objects.nonNull(usuarioDTO) && validarUsuarioPorCPF(usuarioDTO.cpf())) {
+            return this.usuarioRepository.atualizarSenhaUsuario(usuarioDTO);
         }
         return 0;
     }
 
-    private Optional<Usuario> validarUsuario(UsuarioDTO usuarioDTO) {
-        return this.usuarioRepository.findUsuarioByCPF(usuarioDTO.cpf());
+    private boolean validarUsuarioPorCPF(String CPF) {
+        Optional<Usuario> usuario = this.usuarioRepository.buscarUsuarioPorCPF(CPF);
+        return usuario.isPresent();
     }
 
-    private List<UsuarioDTO> validarUsuarioByCpfEmailLogin(UsuarioDTO  usuarioDTO) {
-        List<UsuarioDTO> usuariosDTO = new ArrayList<>();
-        this.usuarioRepository.findUsuarioByCpfEmailLogin(usuarioDTO.cpf(), usuarioDTO.email(), usuarioDTO.login())
-                .forEach(usuario -> usuariosDTO.add(usuarioMapper.usuarioToUsuarioDTO(usuario)));
-        return usuariosDTO;
+    private boolean validarUsuarioPorCpfEmailLogin(Usuario usuario) {
+        List<Usuario> usuarios = this.usuarioRepository
+                .buscarUsuarioPorCpfEmailLoginDifferentID(usuario);
+        return Optional.ofNullable(usuarios).orElse(new ArrayList<>()).isEmpty();
+    }
+
+    public boolean validarLoginUsuario(UsuarioSenhaDTO usuarioDTO) {
+        Optional<Usuario> usuario = this.usuarioRepository.validaUsuarioPorLoginESenha(usuarioDTO);
+        return usuario.isPresent();
     }
 
 }

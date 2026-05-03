@@ -1,5 +1,6 @@
 package com.raidstack.restmanager.repositories;
 
+import com.raidstack.restmanager.dtos.UsuarioSenhaDTO;
 import com.raidstack.restmanager.entity.Usuario;
 
 import java.util.List;
@@ -7,13 +8,16 @@ import java.util.Optional;
 
 public interface UsuarioRepository {
 
-    Optional<Usuario> findById(Long id);
-    Optional<Usuario> findByLogin(String login);
-    List<Usuario> findAll(int size, int offset);
+    Optional<Usuario> buscarPorId(Long id);
+    Optional<Usuario> buscarPorLogin(String login);
+    Optional<Usuario> buscarPorNome(String nome);
+    List<Usuario> buscarTodos(int size, int offset);
     Integer criarUsuario(Usuario usuario);
     Integer atualizarUsuario(Usuario usuario);
+    Integer atualizarSenhaUsuario(UsuarioSenhaDTO usuarioDTO);
     Integer deletarUsuario(Long id);
-    Optional<Usuario> findUsuarioByCPF(String cpf);
-    List<Usuario> findUsuarioByCpfEmailLogin(String cpf, String email, String login);
+    Optional<Usuario> buscarUsuarioPorCPF(String cpf);
+    List<Usuario> buscarUsuarioPorCpfEmailLoginDifferentID(Usuario usuario);
+    Optional<Usuario> validaUsuarioPorLoginESenha(UsuarioSenhaDTO usuarioDTO);
 
 }
