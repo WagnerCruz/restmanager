@@ -6,6 +6,7 @@ import com.raidstack.restmanager.dtos.UsuarioCriarDTO;
 import com.raidstack.restmanager.dtos.UsuarioSenhaDTO;
 import com.raidstack.restmanager.services.UsuarioService;
 import com.raidstack.restmanager.vo.UsuarioVO;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -41,79 +42,49 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public ResponseEntity<Void> getValidaUsuario(@RequestBody UsuarioSenhaDTO usuarioDTO) {
-         LOGGER.info("Validando login de usuario {}", usuarioDTO.login());
-         Boolean usuarioValido = usuarioService.validarLoginUsuario(usuarioDTO);
-         if (usuarioValido) {
-             LOGGER.info("Login validado com sucesso {}", usuarioDTO.login());
-             return ResponseEntity.noContent().build();
-         } else {
-             LOGGER.warn("Erro: Login ou Senha incorretos {}", usuarioDTO.login());
-         }
-            return ResponseEntity.notFound().build();
+        LOGGER.info("Validando login de usuario {}", usuarioDTO.login());
+        usuarioService.validarLoginUsuario(usuarioDTO);
+        LOGGER.info("Login validado com sucesso {}", usuarioDTO.login());
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/nome")
     public ResponseEntity<UsuarioVO> getUsuarioByNome(@RequestBody UsuarioBuscarDTO usuarioDTO) {
         LOGGER.info("Retorna os dados do usuário de acordo com o nome. {}", usuarioDTO.nome());
         UsuarioVO usuarioVO = usuarioService.findByNome(usuarioDTO.nome());
-        if (usuarioVO != null) {
-            LOGGER.info("Usuário encontrado com sucesso. {}", usuarioDTO.nome());
-            return ResponseEntity.ok(usuarioVO);
-        } else {
-            LOGGER.warn("Usuário de login {} não encontrado", usuarioDTO.nome());
-        }
-        return ResponseEntity.notFound().build();
+        LOGGER.info("Usuário encontrado com sucesso. {}", usuarioDTO.nome());
+        return ResponseEntity.ok(usuarioVO);
     }
 
     @PostMapping
-    public ResponseEntity<Void> criarUsuario(@RequestBody UsuarioCriarDTO usuarioDTO) {
+    public ResponseEntity<Void> criarUsuario(@Valid @RequestBody UsuarioCriarDTO usuarioDTO) {
         LOGGER.info("Cria um novo usuário com o login: {}", usuarioDTO.login());
-        Integer flagCriado = usuarioService.criarUsuario(usuarioDTO);
-        if (flagCriado > 0) {
-            LOGGER.info("Usuário criado com sucesso. Login: {}", usuarioDTO.login());
-            return ResponseEntity.status(201).build();
-        } else {
-            LOGGER.error("Erro ao criar usuário com login: {}", usuarioDTO.login());
-            return ResponseEntity.status(500).build();
-        }
+        usuarioService.criarUsuario(usuarioDTO);
+        LOGGER.info("Usuário criado com sucesso. Login: {}", usuarioDTO.login());
+        return ResponseEntity.status(201).build();
     }
 
     @PutMapping
-    public ResponseEntity<Void> atualizarUsuario(@RequestBody UsuarioAtualizarDTO usuarioDTO) {
+    public ResponseEntity<Void> atualizarUsuario(@Valid @RequestBody UsuarioAtualizarDTO usuarioDTO) {
         LOGGER.info("Atualiza o usuário do id: {}", usuarioDTO.id());
-        Integer flagAtualizado = usuarioService.atualizarUsuario(usuarioDTO);
-        if (flagAtualizado > 0) {
-            LOGGER.info("Usuário atualizado com sucesso Id: {}", usuarioDTO.id());
-            return ResponseEntity.ok().build();
-        } else {
-            LOGGER.error("Erro ao atualizar usuário com id: {}", usuarioDTO.id());
-            return ResponseEntity.status(500).build();
-        }
+        usuarioService.atualizarUsuario(usuarioDTO);
+        LOGGER.info("Usuário atualizado com sucesso Id: {}", usuarioDTO.id());
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/senha")
     public ResponseEntity<Void> atualizarSenhaUsuario(@RequestBody UsuarioSenhaDTO usuarioDTO) {
         LOGGER.info("Atualiza senha do usuário do id: {}", usuarioDTO.id());
-        Integer flagAtualizado = usuarioService.atualizarSenhaUsuario(usuarioDTO);
-        if (flagAtualizado > 0) {
-            LOGGER.info("Senha atualizado com sucesso Id: {}", usuarioDTO.id());
-            return ResponseEntity.ok().build();
-        } else {
-            LOGGER.error("Erro ao atualizar senha usuário com id: {}", usuarioDTO.id());
-            return ResponseEntity.status(500).build();
-        }
+        usuarioService.atualizarSenhaUsuario(usuarioDTO);
+        LOGGER.info("Senha atualizado com sucesso Id: {}", usuarioDTO.id());
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping
     public ResponseEntity<Void> deletarUsuario(@RequestBody UsuarioAtualizarDTO usuarioDTO) {
         LOGGER.info("Deleta usuário com ID {}", usuarioDTO.id());
-        String result = usuarioService.deletarUsuario(usuarioDTO);
-        if (result.equals("Usuario deletado com sucesso")) {
-            LOGGER.info("Successfully deleted usuario with id {}", usuarioDTO.id());
-            return ResponseEntity.ok().build();
-        } else {
-            LOGGER.error("Failed to delete usuario with id {}", usuarioDTO.id());
-            return ResponseEntity.status(500).build();
-        }
+        usuarioService.deletarUsuario(usuarioDTO);
+        LOGGER.info("Successfully deleted usuario with id {}", usuarioDTO.id());
+        return ResponseEntity.ok().build();
     }
 }

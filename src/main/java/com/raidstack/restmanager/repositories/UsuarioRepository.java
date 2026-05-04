@@ -17,7 +17,7 @@ public interface UsuarioRepository {
     Integer atualizarSenhaUsuario(UsuarioSenhaDTO usuarioDTO);
     Integer deletarUsuario(Long id);
     Optional<Usuario> buscarUsuarioPorCPF(String cpf);
-    List<Usuario> buscarUsuarioPorCpfEmailLoginDifferentID(Usuario usuario);
+    List<Usuario> buscarUsuarioPorCpfEmailLogin(Usuario usuario);
     Optional<Usuario> validaUsuarioPorLoginESenha(UsuarioSenhaDTO usuarioDTO);
 
 }

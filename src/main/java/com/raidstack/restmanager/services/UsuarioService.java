@@ -6,9 +6,11 @@ import com.raidstack.restmanager.dtos.UsuarioSenhaDTO;
 import com.raidstack.restmanager.entity.Usuario;
 import com.raidstack.restmanager.mapper.UsuarioMapper;
 import com.raidstack.restmanager.repositories.UsuarioRepository;
+import com.raidstack.restmanager.services.exceptions.ResourceBadRequestException;
+import com.raidstack.restmanager.services.exceptions.ResourceExceptionDefault;
+import com.raidstack.restmanager.services.exceptions.ResourceNotFoundException;
 import com.raidstack.restmanager.vo.UsuarioVO;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,6 @@ import java.util.Optional;
 
 @Service
 public class UsuarioService {
-
 
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
@@ -28,24 +29,23 @@ public class UsuarioService {
     }
 
     public UsuarioAtualizarDTO findById(long id) {
-
-        UsuarioAtualizarDTO usuarioDTO = null;
         Optional<Usuario> userById = this.usuarioRepository.buscarPorId(id);
-        if (userById.isPresent()) {
-            usuarioDTO = usuarioMapper.usuarioToUsuarioDTO(userById.get());
+        if (userById.isEmpty()) {
+            throw new ResourceNotFoundException("Usuário não encontrado");
         }
-        return usuarioDTO;
-
+        return usuarioMapper.usuarioToUsuarioDTO(userById.get());
     }
 
     public UsuarioVO findByLogin(String login) {
         Optional<Usuario> userByLogin = this.usuarioRepository.buscarPorLogin(login);
-        return userByLogin.map(usuarioMapper::usuarioToUsuarioVO).orElse(null);
+        return userByLogin.map(usuarioMapper::usuarioToUsuarioVO)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
     }
 
     public UsuarioVO findByNome(String nome) {
         Optional<Usuario> usuario = this.usuarioRepository.buscarPorNome(nome);
-        return usuario.map(usuarioMapper::usuarioToUsuarioVO).orElse(null);
+        return usuario.map(usuarioMapper::usuarioToUsuarioVO)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
     }
 
     public List<UsuarioVO> findAll() {
@@ -58,62 +58,67 @@ public class UsuarioService {
         return usuariosVO;
     }
 
-    public Integer criarUsuario(UsuarioCriarDTO usuarioDTO) {
+    public void criarUsuario(UsuarioCriarDTO usuarioDTO) {
         Usuario usuario = usuarioMapper.usuarioCriarDTOToUsuario(usuarioDTO);
-        Integer flagCriado = 0;
-        if (validarUsuarioPorCpfEmailLogin(usuario)) {
-            flagCriado = this.usuarioRepository.criarUsuario(usuario);
+        validarUsuarioPorCpfEmailLogin(usuario);
+        Integer flagCriado = this.usuarioRepository.criarUsuario(usuario);
+        if (flagCriado <= 0) {
+            throw new ResourceExceptionDefault("Erro ao gravar Usuário");
         }
-        if (flagCriado > 0) {
-            Assert.state(flagCriado > 0, "Erro ao gravar usuario: " + usuario.getId());
-        }
-        return flagCriado;
     }
 
-    public Integer atualizarUsuario(UsuarioAtualizarDTO usuarioDTO) {
+    public void atualizarUsuario(UsuarioAtualizarDTO usuarioDTO) {
         Usuario usuario = usuarioMapper.usuarioDTOToUsuario(usuarioDTO);
-        if(validarUsuarioPorCpfEmailLogin(usuario)) {
-            return this.usuarioRepository.atualizarUsuario(usuario);
-        }else{
-            return 0;
+        validarUsuarioPorCpfEmailLogin(usuario);
+        Integer flagAtualizado = this.usuarioRepository.atualizarUsuario(usuario);
+        if (flagAtualizado <= 0) {
+            throw new ResourceExceptionDefault("Erro ao atualizar Usuário ID["+usuario.getId()+"]");
         }
     }
 
-    public String deletarUsuario(UsuarioAtualizarDTO usuarioDTO) {
+    public void deletarUsuario(UsuarioAtualizarDTO usuarioDTO) {
         Optional<Long> id = this.usuarioRepository.buscarUsuarioPorCPF(usuarioDTO.cpf()).map(Usuario::getId);
-        Integer flagDeletado = 0;
-        if (id.isPresent()) {
-            flagDeletado = this.usuarioRepository.deletarUsuario(id.get());
-        } else {
-            return "Erro Usuario não encontrado";
+        if (id.isEmpty()) {
+            throw new ResourceNotFoundException("Usuário não encontrado");
         }
-        if (flagDeletado > 0) {
-            return "Usuario deletado com sucesso";
+        Integer flagDeletado = this.usuarioRepository.deletarUsuario(id.get());
+        if (flagDeletado <= 0) {
+            throw new ResourceExceptionDefault("Erro ao deletar Usuário ID["+id.get()+"]");
         }
-        return "Erro ao deletar usuario";
     }
 
-    public Integer atualizarSenhaUsuario(UsuarioSenhaDTO usuarioDTO) {
-        if (Objects.nonNull(usuarioDTO) && validarUsuarioPorCPF(usuarioDTO.cpf())) {
-            return this.usuarioRepository.atualizarSenhaUsuario(usuarioDTO);
+    public void atualizarSenhaUsuario(UsuarioSenhaDTO usuarioDTO) {
+        if (Objects.isNull(usuarioDTO)) {
+            throw new ResourceExceptionDefault("Usuário informado é inválido");
         }
-        return 0;
+        validarUsuarioPorCPF(usuarioDTO.cpf());
+        this.usuarioRepository.atualizarSenhaUsuario(usuarioDTO);
     }
 
-    private boolean validarUsuarioPorCPF(String CPF) {
-        Optional<Usuario> usuario = this.usuarioRepository.buscarUsuarioPorCPF(CPF);
-        return usuario.isPresent();
+    private void validarUsuarioPorCPF(String cpf) {
+        Optional<Usuario> usuario = this.usuarioRepository.buscarUsuarioPorCPF(cpf);
+        if (usuario.isEmpty()) {
+            throw new ResourceBadRequestException("Erro ao validar Usuário: Nenhum usuário cadastrado com o CPF ["+cpf+"]");
+        }
     }
 
-    private boolean validarUsuarioPorCpfEmailLogin(Usuario usuario) {
-        List<Usuario> usuarios = this.usuarioRepository
-                .buscarUsuarioPorCpfEmailLoginDifferentID(usuario);
-        return Optional.ofNullable(usuarios).orElse(new ArrayList<>()).isEmpty();
+    private void validarUsuarioPorCpfEmailLogin(Usuario usuario) {
+        List<Usuario> usuarios = this.usuarioRepository.buscarUsuarioPorCpfEmailLogin(usuario);
+        Usuario usuarioId = usuarios.stream()
+                .filter(user -> user.getId().equals(usuario.getId()))
+                .findAny().orElse(null);
+        usuarios.remove(usuarioId);
+        if (!usuarios.isEmpty()) {
+            throw new ResourceBadRequestException("Erro ao validar Usuário: já existe um usuário com essas " +
+                    "credenciais de cadastro CPF, Email ou Login");
+        }
     }
 
-    public boolean validarLoginUsuario(UsuarioSenhaDTO usuarioDTO) {
+    public void validarLoginUsuario(UsuarioSenhaDTO usuarioDTO) {
         Optional<Usuario> usuario = this.usuarioRepository.validaUsuarioPorLoginESenha(usuarioDTO);
-        return usuario.isPresent();
+        if (usuario.isPresent()) {
+            throw new ResourceBadRequestException("Erro ao validar Usuário: Login e Senha estão incorretos");
+        }
     }
 
 }

@@ -111,10 +111,8 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
     }
 
     @Override
-    public List<Usuario> buscarUsuarioPorCpfEmailLoginDifferentID(Usuario usuario) {
-        return this.jdbcClient.sql("SELECT * FROM USUARIOS WHERE id != :id " +
-                        " AND (cpf = :cpf OR email = :email OR login = :login)")
-                .param("id", usuario.getId())
+    public List<Usuario> buscarUsuarioPorCpfEmailLogin(Usuario usuario) {
+        return this.jdbcClient.sql("SELECT * FROM USUARIOS WHERE cpf = :cpf OR email = :email OR login = :login")
                 .param("cpf", usuario.getCpf())
                 .param("email", usuario.getEmail())
                 .param("login", usuario.getLogin())
