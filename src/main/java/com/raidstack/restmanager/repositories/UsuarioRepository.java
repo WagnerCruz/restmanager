@@ -10,7 +10,9 @@ public interface UsuarioRepository {
 
     Optional<Usuario> buscarPorId(Long id);
     Optional<Usuario> buscarPorLogin(String login);
-    Optional<Usuario> buscarPorNome(String nome);
+    Optional<Usuario> buscarPorCPF(String cpf);
+    Optional<Usuario> buscarPorEmail(String email);
+    List<Usuario> buscarPorNome(String nome);
     List<Usuario> buscarTodos(int size, int offset);
     Integer criarUsuario(Usuario usuario);
     Integer atualizarUsuario(Usuario usuario);

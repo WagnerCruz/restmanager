@@ -49,11 +49,11 @@ public class UsuarioController {
     }
 
     @PostMapping("/nome")
-    public ResponseEntity<UsuarioVO> getUsuarioByNome(@RequestBody UsuarioBuscarDTO usuarioDTO) {
+    public ResponseEntity<List<UsuarioVO>> getUsuarioByNome(@RequestBody UsuarioBuscarDTO usuarioDTO) {
         LOGGER.info("Retorna os dados do usuário de acordo com o nome. {}", usuarioDTO.nome());
-        UsuarioVO usuarioVO = usuarioService.findByNome(usuarioDTO.nome());
+        List<UsuarioVO> usuariosVO = usuarioService.findByNome(usuarioDTO.nome());
         LOGGER.info("Usuário encontrado com sucesso. {}", usuarioDTO.nome());
-        return ResponseEntity.ok(usuarioVO);
+        return ResponseEntity.ok(usuariosVO);
     }
 
     @PostMapping
@@ -73,7 +73,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/senha")
-    public ResponseEntity<Void> atualizarSenhaUsuario(@RequestBody UsuarioSenhaDTO usuarioDTO) {
+    public ResponseEntity<Void> atualizarSenhaUsuario(@RequestBody @Valid UsuarioSenhaDTO usuarioDTO) {
         LOGGER.info("Atualiza senha do usuário do id: {}", usuarioDTO.id());
         usuarioService.atualizarSenhaUsuario(usuarioDTO);
         LOGGER.info("Senha atualizado com sucesso Id: {}", usuarioDTO.id());

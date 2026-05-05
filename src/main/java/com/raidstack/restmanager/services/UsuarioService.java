@@ -7,6 +7,7 @@ import com.raidstack.restmanager.entity.Usuario;
 import com.raidstack.restmanager.mapper.UsuarioMapper;
 import com.raidstack.restmanager.repositories.UsuarioRepository;
 import com.raidstack.restmanager.services.exceptions.ResourceBadRequestException;
+import com.raidstack.restmanager.services.exceptions.ResourceConflictException;
 import com.raidstack.restmanager.services.exceptions.ResourceExceptionDefault;
 import com.raidstack.restmanager.services.exceptions.ResourceNotFoundException;
 import com.raidstack.restmanager.vo.UsuarioVO;
@@ -42,10 +43,14 @@ public class UsuarioService {
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
     }
 
-    public UsuarioVO findByNome(String nome) {
-        Optional<Usuario> usuario = this.usuarioRepository.buscarPorNome(nome);
-        return usuario.map(usuarioMapper::usuarioToUsuarioVO)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+    public List<UsuarioVO> findByNome(String nome) {
+        List<Usuario> usuarios = this.usuarioRepository.buscarPorNome(nome.toLowerCase());
+        if (usuarios.isEmpty()) {
+            throw new ResourceNotFoundException("Nenhum usuário localizado");
+        }
+        List<UsuarioVO> usuariosVO = new ArrayList<>();
+        usuarios.forEach(usuario -> usuariosVO.add(usuarioMapper.usuarioToUsuarioVO(usuario)));
+        return usuariosVO;
     }
 
     public List<UsuarioVO> findAll() {
@@ -60,7 +65,7 @@ public class UsuarioService {
 
     public void criarUsuario(UsuarioCriarDTO usuarioDTO) {
         Usuario usuario = usuarioMapper.usuarioCriarDTOToUsuario(usuarioDTO);
-        validarUsuarioPorCpfEmailLogin(usuario);
+        validarCredenciaisUsuario(usuario);
         Integer flagCriado = this.usuarioRepository.criarUsuario(usuario);
         if (flagCriado <= 0) {
             throw new ResourceExceptionDefault("Erro ao gravar Usuário");
@@ -69,7 +74,7 @@ public class UsuarioService {
 
     public void atualizarUsuario(UsuarioAtualizarDTO usuarioDTO) {
         Usuario usuario = usuarioMapper.usuarioDTOToUsuario(usuarioDTO);
-        validarUsuarioPorCpfEmailLogin(usuario);
+        validarCredenciaisUsuario(usuario);
         Integer flagAtualizado = this.usuarioRepository.atualizarUsuario(usuario);
         if (flagAtualizado <= 0) {
             throw new ResourceExceptionDefault("Erro ao atualizar Usuário ID["+usuario.getId()+"]");
@@ -89,7 +94,7 @@ public class UsuarioService {
 
     public void atualizarSenhaUsuario(UsuarioSenhaDTO usuarioDTO) {
         if (Objects.isNull(usuarioDTO)) {
-            throw new ResourceExceptionDefault("Usuário informado é inválido");
+            throw new ResourceBadRequestException("Usuário informado é inválido");
         }
         validarUsuarioPorCPF(usuarioDTO.cpf());
         this.usuarioRepository.atualizarSenhaUsuario(usuarioDTO);
@@ -102,21 +107,30 @@ public class UsuarioService {
         }
     }
 
-    private void validarUsuarioPorCpfEmailLogin(Usuario usuario) {
-        List<Usuario> usuarios = this.usuarioRepository.buscarUsuarioPorCpfEmailLogin(usuario);
-        Usuario usuarioId = usuarios.stream()
-                .filter(user -> user.getId().equals(usuario.getId()))
-                .findAny().orElse(null);
-        usuarios.remove(usuarioId);
-        if (!usuarios.isEmpty()) {
-            throw new ResourceBadRequestException("Erro ao validar Usuário: já existe um usuário com essas " +
-                    "credenciais de cadastro CPF, Email ou Login");
+    private void validarCredenciaisUsuario(Usuario usuario) {
+        List<String> errosValidacao = new ArrayList<>();
+        Optional<Usuario> usuarioCPF = this.usuarioRepository.buscarUsuarioPorCPF(usuario.getCpf());
+        Optional<Usuario> usuarioLogin = this.usuarioRepository.buscarPorLogin(usuario.getLogin());
+        Optional<Usuario> usuarioEmail = this.usuarioRepository.buscarPorEmail(usuario.getEmail());
+
+        if (usuarioCPF.isPresent() && !usuarioCPF.get().getId().equals(usuario.getId())) {
+            errosValidacao.add("cpf: CPF informado já está cadastrado");
+        }
+        if (usuarioLogin.isPresent() && !usuarioLogin.get().getId().equals(usuario.getId())) {
+            errosValidacao.add("login: Login informado já está cadastrado");
+        }
+        if (usuarioEmail.isPresent() && !usuarioEmail.get().getId().equals(usuario.getId())) {
+            errosValidacao.add("email: E-mail informado já está cadastrado");
+        }
+
+        if (!errosValidacao.isEmpty()) {
+            throw new ResourceConflictException("Erro ao validar Usuário: Algumas credenciais já estão cadastradas", errosValidacao);
         }
     }
 
     public void validarLoginUsuario(UsuarioSenhaDTO usuarioDTO) {
         Optional<Usuario> usuario = this.usuarioRepository.validaUsuarioPorLoginESenha(usuarioDTO);
-        if (usuario.isPresent()) {
+        if (usuario.isEmpty()) {
             throw new ResourceBadRequestException("Erro ao validar Usuário: Login e Senha estão incorretos");
         }
     }

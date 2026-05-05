@@ -8,9 +8,6 @@ import java.io.Serializable;
 
 public record UsuarioCriarDTO(
 
-        @NotNull(message = "ID do usuário é obrigatório")
-        Integer id,
-
         @NotNull(message = "Nome é obrigatório")
         String nome,
 
@@ -19,6 +16,7 @@ public record UsuarioCriarDTO(
         String cpf,
 
         @Email(message = "E-mail informado é inválido")
+        @NotNull(message = "E-mail é obrigatório")
         String email,
 
         @NotNull(message = "Login de usuário é obrigatório")

@@ -94,11 +94,27 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
     }
 
     @Override
-    public Optional<Usuario> buscarPorNome(String nome) {
-        return this.jdbcClient.sql("SELECT * FROM USUARIOS WHERE nome = :nome")
-                .param("nome", nome)
+    public Optional<Usuario> buscarPorCPF(String cpf) {
+        return this.jdbcClient.sql("SELECT * FROM USUARIOS WHERE cpf = :cpf")
+                .param("cpf", cpf)
                 .query(Usuario.class)
                 .optional();
+    }
+
+    @Override
+    public Optional<Usuario> buscarPorEmail(String email) {
+        return this.jdbcClient.sql("SELECT * FROM USUARIOS WHERE email = :email")
+                .param("email", email)
+                .query(Usuario.class)
+                .optional();
+    }
+
+    @Override
+    public List<Usuario> buscarPorNome(String nome) {
+        return this.jdbcClient.sql("SELECT * FROM USUARIOS WHERE LOWER(nome) LIKE :nome")
+                .param("nome", "%"+nome+"%")
+                .query(Usuario.class)
+                .list();
     }
 
      @Override

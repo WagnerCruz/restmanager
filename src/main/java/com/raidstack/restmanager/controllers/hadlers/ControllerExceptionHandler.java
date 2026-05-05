@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -23,6 +24,9 @@ public class ControllerExceptionHandler {
         problem.setTitle(exception.getTitulo());
         problem.setDetail(exception.getMessage());
         problem.setProperty("timestamp", LocalDateTime.now());
+        if (Objects.nonNull(exception.getErrors()) && !exception.getErrors().isEmpty()) {
+            problem.setProperty("errors", exception.getErrors());
+        }
         return ResponseEntity.status(exception.getHttpStatus()).body(problem);
     }
 
