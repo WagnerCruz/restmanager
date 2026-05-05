@@ -1,0 +1,45 @@
+# version: "3.9"
+
+volumes:
+  db_data: {}
+
+networks:
+  application-network:
+    driver: bridge
+
+services:
+
+  db_postgresql:
+    image: postgres:15
+    container_name: restmanager-postgres-db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./src/main/resources/scripts:/docker-entrypoint-initdb.d
+    restart: always
+    networks:
+      - application-network
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:5432"
+
+  back-end:
+    build: .
+    container_name: restmanager-java-app
+    ports:
+      - "${API_PORT}:8099"
+    restart: no
+    networks:
+      - application-network
+    environment:
+      API_PORT_DEFAULT: ${API_PORT}
+      API_NAME_DEFAULT: ${API_NAME}
+      POSTGRES_DB_HOST: db_postgresql
+      POSTGRES_DB_PORT: 5432
+      POSTGRES_DB_NAME: ${DB_NAME}
+      POSTGRES_DB_USER: ${DB_USER}
+      POSTGRES_DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      - db_postgresql

@@ -1,0 +1,44 @@
+package com.raidstack.restmanager.controllers.hadlers;
+
+import com.raidstack.restmanager.services.exceptions.ResourceBadRequestException;
+import com.raidstack.restmanager.services.exceptions.ResourceExceptionDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@ControllerAdvice
+public class ControllerExceptionHandler {
+
+    @ExceptionHandler(ResourceExceptionDefault.class)
+    public ResponseEntity<ProblemDetail> handlerResourceException(ResourceExceptionDefault exception) {
+        ProblemDetail problem = ProblemDetail.forStatus(exception.getHttpStatus());
+        problem.setTitle(exception.getTitulo());
+        problem.setDetail(exception.getMessage());
+        problem.setProperty("timestamp", LocalDateTime.now());
+        return ResponseEntity.status(exception.getHttpStatus()).body(problem);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ProblemDetail> handlerMethodNotValidException(MethodArgumentNotValidException exception) {
+        var status = HttpStatus.BAD_REQUEST;
+        ProblemDetail problem = ProblemDetail.forStatus(status);
+        problem.setTitle("Requisição incorreta");
+        problem.setDetail(exception.getMessage());
+        List<String> errors = new ArrayList<>();
+        for (FieldError error : exception.getBindingResult().getFieldErrors()) {
+            errors.add(error.getField() + ": " + error.getDefaultMessage());
+        }
+        problem.setProperty("errors", errors);
+        problem.setProperty("timestamp", LocalDateTime.now());
+        return ResponseEntity.status(status).body(problem);
+    }
+
+}
