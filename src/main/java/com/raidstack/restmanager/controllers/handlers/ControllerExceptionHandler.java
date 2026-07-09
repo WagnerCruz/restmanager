@@ -1,6 +1,5 @@
-package com.raidstack.restmanager.controllers.hadlers;
+package com.raidstack.restmanager.controllers.handlers;
 
-import com.raidstack.restmanager.services.exceptions.ResourceBadRequestException;
 import com.raidstack.restmanager.services.exceptions.ResourceExceptionDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
