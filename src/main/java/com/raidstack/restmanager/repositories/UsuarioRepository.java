@@ -1,6 +1,6 @@
 package com.raidstack.restmanager.repositories;
 
-import com.raidstack.restmanager.dtos.UsuarioSenhaDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioSenhaDTO;
 import com.raidstack.restmanager.entity.Usuario;
 
 import java.util.List;

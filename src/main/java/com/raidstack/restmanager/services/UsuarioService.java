@@ -1,8 +1,8 @@
 package com.raidstack.restmanager.services;
 
-import com.raidstack.restmanager.dtos.UsuarioAtualizarDTO;
-import com.raidstack.restmanager.dtos.UsuarioCriarDTO;
-import com.raidstack.restmanager.dtos.UsuarioSenhaDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioAtualizarDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioCriarDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioSenhaDTO;
 import com.raidstack.restmanager.entity.Usuario;
 import com.raidstack.restmanager.mapper.UsuarioMapper;
 import com.raidstack.restmanager.repositories.UsuarioRepository;

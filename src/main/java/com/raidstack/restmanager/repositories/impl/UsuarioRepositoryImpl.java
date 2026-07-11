@@ -1,9 +1,8 @@
 package com.raidstack.restmanager.repositories.impl;
 
-import com.raidstack.restmanager.dtos.UsuarioSenhaDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioSenhaDTO;
 import com.raidstack.restmanager.entity.Usuario;
 import com.raidstack.restmanager.repositories.UsuarioRepository;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 

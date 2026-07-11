@@ -10,8 +10,8 @@ import org.springframework.data.relational.core.mapping.Table;
 @Setter
 @ToString
 @EqualsAndHashCode
-@Table("cardapio")
-public class cardapio {
+@Table("item_cardapio")
+public class ItemCardapio {
 
     private int id;
     private String nome_item;

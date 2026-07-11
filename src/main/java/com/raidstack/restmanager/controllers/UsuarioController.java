@@ -1,9 +1,9 @@
 package com.raidstack.restmanager.controllers;
 
-import com.raidstack.restmanager.dtos.UsuarioAtualizarDTO;
-import com.raidstack.restmanager.dtos.UsuarioBuscarDTO;
-import com.raidstack.restmanager.dtos.UsuarioCriarDTO;
-import com.raidstack.restmanager.dtos.UsuarioSenhaDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioAtualizarDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioBuscarDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioCriarDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioSenhaDTO;
 import com.raidstack.restmanager.services.UsuarioService;
 import com.raidstack.restmanager.vo.UsuarioVO;
 import jakarta.validation.Valid;
@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;

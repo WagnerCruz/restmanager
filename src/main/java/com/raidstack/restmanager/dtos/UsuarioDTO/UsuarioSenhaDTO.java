@@ -1,6 +1,5 @@
-package com.raidstack.restmanager.dtos;
+package com.raidstack.restmanager.dtos.UsuarioDTO;
 
-import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.io.Serializable;

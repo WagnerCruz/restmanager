@@ -13,7 +13,7 @@ import java.sql.Time;
 @ToString
 @EqualsAndHashCode
 @Table("restaurantes")
-public class restaurante {
+public class Restaurante {
 
     private int id;;
     private String nome;
