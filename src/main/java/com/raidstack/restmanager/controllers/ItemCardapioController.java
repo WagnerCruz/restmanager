@@ -31,7 +31,7 @@ public class ItemCardapioController {
         this.itemCardapioService = itemCardapioService;
     }
 
-    @GetMapping
+    @GetMapping("/todos")
     public ResponseEntity<List<ItemCardapioBuscarDTO>> pesquisarTodosItensCardapio() {
         LOGGER.info("Retorna uma lista de todos os itens de cardápio cadastrados");
         List<ItemCardapioBuscarDTO> itensCardapioBuscarDTO = itemCardapioService.buscarTodosItens(10,1);
@@ -39,7 +39,7 @@ public class ItemCardapioController {
         return ResponseEntity.ok(itensCardapioBuscarDTO);
     }
 
-    @GetMapping
+    @GetMapping("/nome/{nome}")
     public ResponseEntity<List<ItemCardapioBuscarDTO>> pesquisarItensPorNome(@RequestParam String nome) {
         LOGGER.info("Pesquisando itens de cardápio pelo nome: {}", nome);
         List<ItemCardapioBuscarDTO> itensCardapioBuscarDTO = itemCardapioService.buscarItemPorNome(nome);
@@ -47,7 +47,7 @@ public class ItemCardapioController {
         return ResponseEntity.ok(itensCardapioBuscarDTO);
     }
 
-    @GetMapping
+    @GetMapping("/descricao/{descricao}")
     public ResponseEntity<List<ItemCardapioBuscarDTO>> pesquisarItensPorDescricao(@RequestParam String descricao) {
         LOGGER.info("Pesquisando itens de cardápio pela descrição: {}", descricao);
         List<ItemCardapioBuscarDTO> itensCardapioBuscarDTO = itemCardapioService.buscarItemPorDescricao(descricao);
@@ -55,7 +55,7 @@ public class ItemCardapioController {
         return ResponseEntity.ok(itensCardapioBuscarDTO);
     }
 
-    @GetMapping
+    @GetMapping("/disponibilidade/{disponibilidade}")
     public ResponseEntity<List<ItemCardapioBuscarDTO>> pesquisarItensPorDisponibilidade(@RequestParam String disponibilidade) {
         LOGGER.info("Pesquisando itens de cardápio pela disponibilidade: {}", disponibilidade);
         List<ItemCardapioBuscarDTO> itensCardapioBuscarDTO = itemCardapioService.buscarItensPorDisponibilidade(disponibilidade);

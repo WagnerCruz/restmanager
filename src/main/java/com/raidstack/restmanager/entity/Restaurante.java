@@ -21,6 +21,6 @@ public class Restaurante {
     private String tipo_cozinha;
     private Time horario_inicio_functo;
     private Time horario_fim_functo;
-    private int id_usuario;
+    private Integer id_usuario;
 
 }

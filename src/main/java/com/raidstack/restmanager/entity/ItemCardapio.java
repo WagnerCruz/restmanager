@@ -16,7 +16,7 @@ public class ItemCardapio {
     private Long id;
     private String nome_item;
     private String descricao;
-    private double valor_item;
+    private Double valor_item;
     private String disponibilidade;
     private String imagem_prato;
 
