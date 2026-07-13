@@ -1,0 +1,185 @@
+openapi: 3.1.0
+info:
+  title: API - Restaurantes
+  version: v1
+servers:
+- url: http://localhost:8099
+  description: Generated server url
+paths:
+  /v1/restaurantes:
+    get:
+      tags:
+      - restaurante-controller
+      operationId: pesquisarTodosRestaurantes
+      summary: Retorna lista de restaurantes. Pode filtrar por query params.
+      parameters:
+      - name: horario
+        in: query
+        description: Horário a ser filtrado (formato HH:mm:ss). Quando informado, retorna restaurantes abertos nesse horário.
+        required: false
+        schema:
+          type: string
+          format: time
+      - name: tipoCozinha
+        in: query
+        description: Tipo de cozinha para filtrar (opcional). Existe também endpoint dedicado /restauranteportipocozinha.
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RestauranteBuscarDTO'
+    delete:
+      tags:
+      - restaurante-controller
+      operationId: removerRestaurante
+      summary: Remove um restaurante. Forneça o objeto com o id a ser removido.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RestauranteAtualizarDTO'
+      responses:
+        "200":
+          description: OK
+  /v1/restaurantes/portipocozinha:
+    get:
+      tags:
+      - restaurante-controller
+      operationId: pesquisarRestaurantesPorTipoCozinha
+      summary: Pesquisa restaurantes por tipo de cozinha (parâmetro obrigatório).
+      parameters:
+      - name: tipoCozinha
+        in: query
+        description: Tipo de cozinha a ser pesquisado
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RestauranteBuscarDTO'
+  /v1/restaurantes/porhorario:
+    get:
+      tags:
+        - restaurante-controller
+      operationId: pesquisarRestaurantesPorHorario
+      summary: Pesquisa restaurantes por horário (parâmetro obrigatório).
+      parameters:
+        - name: horario
+          in: query
+          description: Horário a ser pesquisado
+          required: true
+          schema:
+            type: string
+            format: time
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RestauranteBuscarDTO'
+  /v1/restaurantes/cadastrarrestaurante:
+    post:
+      tags:
+      - restaurante-controller
+      operationId: cadastrarRestaurante
+      summary: Cadastra um novo restaurante
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RestauranteCriarDTO'
+      responses:
+        "201":
+          description: Created
+  /v1/restaurantes/atualizarrestaurante:
+    put:
+      tags:
+      - restaurante-controller
+      operationId: atualizarRestaurante
+      summary: Atualiza um restaurante existente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RestauranteAtualizarDTO'
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    RestauranteBuscarDTO:
+      type: object
+      properties:
+        nome:
+          type: string
+        tipoCozinha:
+          type: string
+        horarioBusca:
+          type: string
+          format: time
+    RestauranteCriarDTO:
+      type: object
+      properties:
+        nome:
+          type: string
+        endereco:
+          type: string
+        tipoCozinha:
+          type: string
+        horaInicio:
+          type: string
+          format: time
+        horaFim:
+          type: string
+          format: time
+      required:
+      - nome
+      - endereco
+      - tipoCozinha
+      - horaInicio
+      - horaFim
+    RestauranteAtualizarDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nome:
+          type: string
+        endereco:
+          type: string
+        tipoCozinha:
+          type: string
+        horaInicio:
+          type: string
+          format: time
+        horaFim:
+          type: string
+          format: time
+      required:
+      - id
+      - nome
+      - endereco
+      - tipoCozinha
+      - horaInicio
+      - horaFim
+
