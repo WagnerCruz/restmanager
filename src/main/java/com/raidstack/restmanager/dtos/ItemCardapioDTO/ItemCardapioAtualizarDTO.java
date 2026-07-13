@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 public record ItemCardapioAtualizarDTO(
 
         @NotNull(message = "O ID do item é obrigatório")
-        Integer id,
+        Long id,
         @NotNull(message = "O nome do item é obrigatório")
         String nome_item,
         @NotNull(message = "A descrição do item é obrigatória")

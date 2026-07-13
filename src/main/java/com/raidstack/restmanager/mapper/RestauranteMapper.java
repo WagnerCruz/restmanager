@@ -9,7 +9,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface RestauranteMapper {
 
-    RestauranteAtualizarDTO restauranteToRestauranteDTO(Restaurante restaurante);
+    RestauranteAtualizarDTO restauranteToRestauranteAtualizarDTO(Restaurante restaurante);
     Restaurante restauranteCriarDTOToRestaurante(RestauranteCriarDTO restauranteDTO);
 
     RestauranteBuscarDTO toBuscarDTO(Restaurante restaurante);

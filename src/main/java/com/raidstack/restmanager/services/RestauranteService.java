@@ -63,5 +63,11 @@ public class RestauranteService {
         restauranteRepository.atualizarRestaurante(restaurante);
     }
 
+    public void removerRestaurante(RestauranteAtualizarDTO restauranteAtualizarDTO) {
+        this.restauranteRepository.buscarPorId(restauranteAtualizarDTO.id())
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurante não encontrado com o ID: " + restauranteAtualizarDTO.id()));
+        restauranteRepository.deletarRestaurante(restauranteAtualizarDTO.id());
+    }
+
 
 }

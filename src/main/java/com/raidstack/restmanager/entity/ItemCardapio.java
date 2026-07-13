@@ -13,7 +13,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table("item_cardapio")
 public class ItemCardapio {
 
-    private int id;
+    private Long id;
     private String nome_item;
     private String descricao;
     private double valor_item;

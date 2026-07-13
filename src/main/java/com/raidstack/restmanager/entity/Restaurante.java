@@ -15,7 +15,7 @@ import java.sql.Time;
 @Table("restaurantes")
 public class Restaurante {
 
-    private int id;;
+    private Long id;;
     private String nome;
     private String endereco;
     private String tipo_cozinha;

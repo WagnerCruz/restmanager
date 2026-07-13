@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 public record RestauranteAtualizarDTO(
 
         @NotNull(message = "ID do restaurante é obrigatório")
-        Integer id,
+        Long id,
 
         @NotNull(message = "Nome é obrigatório")
         String nome,
