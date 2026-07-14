@@ -1,5 +1,7 @@
 package com.raidstack.restmanager.helper;
 
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioAtualizarDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioCriarDTO;
 import com.raidstack.restmanager.entity.ItemCardapio;
 import com.raidstack.restmanager.entity.Restaurante;
 import com.raidstack.restmanager.entity.Usuario;
@@ -59,6 +61,32 @@ public abstract class MocksHelper {
         usuarioProprietario.setFlagProprietario(true);
 
         return usuarioProprietario;
+    }
+
+    public static UsuarioCriarDTO mockUsuarioCriarDTO() {
+        return new UsuarioCriarDTO(
+                "João Silva",
+                "12345678900",
+                "joao@email.com",
+                "joao",
+                "senha123",
+                "Rua A",
+                123,
+                "N"
+        );
+    }
+
+    public static UsuarioAtualizarDTO mockUsuarioAtualizarDTO() {
+        return new UsuarioAtualizarDTO(
+                1L,
+                "João Silva",
+                "12345678900",
+                "joao@email.com",
+                "joao",
+                "Rua A",
+                123,
+                "N"
+        );
     }
 
 }

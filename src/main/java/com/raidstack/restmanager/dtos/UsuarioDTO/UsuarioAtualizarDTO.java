@@ -9,7 +9,7 @@ import java.io.Serializable;
 public record UsuarioAtualizarDTO(
 
         @NotNull(message = "ID do usuário é obrigatório")
-        Integer id,
+        Long id,
 
         @NotNull(message = "Nome é obrigatório")
         String nome,

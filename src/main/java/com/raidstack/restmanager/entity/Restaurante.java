@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.sql.Time;
@@ -15,7 +16,8 @@ import java.sql.Time;
 @Table("restaurantes")
 public class Restaurante {
 
-    private Long id;;
+    @Id
+    private Long id;
     private String nome;
     private String endereco;
     private String tipo_cozinha;
