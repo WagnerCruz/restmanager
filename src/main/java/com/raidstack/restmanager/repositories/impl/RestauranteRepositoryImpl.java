@@ -31,7 +31,7 @@ public class RestauranteRepositoryImpl implements RestauranteRepository {
     public List<Restaurante> buscarTodosRestaurantes(int size, int offset) {
         return this.jdbcClient.sql("SELECT * FROM restaurantes LIMIT :size OFFSET :offset")
                 .param("size", size)
-                .param("offset", offset)
+                .param("offset", offset > 0 ? offset-1 : offset)
                 .query(Restaurante.class)
                 .list();
     }

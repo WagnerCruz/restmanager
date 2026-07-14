@@ -28,7 +28,7 @@ public class ItemCardapioRepositoryImpl implements ItemCardapioRepository {
     public List<ItemCardapio> buscarTodosItens(int size, int offset) {
         return this.jdbcClient.sql("SELECT * FROM item_cardapio LIMIT :size OFFSET :offset")
                 .param("size", size)
-                .param("offset", offset)
+                .param("offset", offset > 0 ? offset-1 : offset)
                 .query(ItemCardapio.class)
                 .list();
     }
