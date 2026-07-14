@@ -5,8 +5,6 @@ import com.raidstack.restmanager.entity.Restaurante;
 import com.raidstack.restmanager.entity.Usuario;
 
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class MocksHelper {
 
@@ -22,12 +20,6 @@ public abstract class MocksHelper {
         return itemCardapio;
     }
 
-    public static List<ItemCardapio> mockListItemCardapio() {
-        List<ItemCardapio> itemList = new ArrayList<>();
-        itemList.add(mockItemCardapio());
-        return itemList;
-    }
-
     public static Restaurante mockRestaurante() {
         Restaurante restaurante = new Restaurante();
         restaurante.setId(1L);
@@ -40,13 +32,7 @@ public abstract class MocksHelper {
         return restaurante;
     }
 
-    public static List<Restaurante> mockListRestaurante() {
-        List<Restaurante> restauranteList = new ArrayList<>();
-        restauranteList.add(mockRestaurante());
-        return restauranteList;
-    }
-
-    public static Usuario mockUsuario() {
+    public static Usuario mockUsuarioCliente() {
         Usuario usuario = new Usuario();
         usuario.setId(1L);
         usuario.setNome("João Silva");
@@ -61,10 +47,18 @@ public abstract class MocksHelper {
         return usuario;
     }
 
-    public static List<Usuario> mockListUsuario() {
-        List<Usuario> usuarioList = new ArrayList<>();
-        usuarioList.add(mockUsuario());
-        return usuarioList;
+    public static Usuario mockUsuarioProprietario() {
+        Usuario usuarioProprietario = new Usuario();
+        usuarioProprietario.setNome("Maria");
+        usuarioProprietario.setCpf("98765432100");
+        usuarioProprietario.setEmail("maria@email.com");
+        usuarioProprietario.setLogin("maria");
+        usuarioProprietario.setSenha("senha456");
+        usuarioProprietario.setEndereco("Rua B");
+        usuarioProprietario.setNumero(456);
+        usuarioProprietario.setFlagProprietario(true);
+
+        return usuarioProprietario;
     }
 
 }

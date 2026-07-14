@@ -9,10 +9,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.raidstack.restmanager.helper.MocksHelper.mockItemCardapio;
-import static com.raidstack.restmanager.helper.MocksHelper.mockListItemCardapio;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -41,7 +41,7 @@ class ItemCardapioRepositoryImplTest {
         when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
         when(statementSpec.param("id", 1L)).thenReturn(paramSpec);
         when(paramSpec.query(ItemCardapio.class)).thenReturn(querySpec);
-        when(querySpec.list()).thenReturn(mockListItemCardapio());
+        when(querySpec.list()).thenReturn(Arrays.asList(mockItemCardapio()));
 
         List<ItemCardapio> result = repository.buscarItemPorId(1L);
 
@@ -91,7 +91,7 @@ class ItemCardapioRepositoryImplTest {
         when(statementSpec.param("size", 10)).thenReturn(paramSpec);
         when(paramSpec.param("offset", 0)).thenReturn(paramSpec);
         when(paramSpec.query(ItemCardapio.class)).thenReturn(querySpec);
-        when(querySpec.list()).thenReturn(mockListItemCardapio());
+        when(querySpec.list()).thenReturn(Arrays.asList(mockItemCardapio()));
 
         List<ItemCardapio> result = repository.buscarTodosItens(10, 0);
 
@@ -117,7 +117,7 @@ class ItemCardapioRepositoryImplTest {
         when(statementSpec.param("size", 1)).thenReturn(paramSpec);
         when(paramSpec.param("offset", 0)).thenReturn(paramSpec);
         when(paramSpec.query(ItemCardapio.class)).thenReturn(querySpec);
-        when(querySpec.list()).thenReturn(mockListItemCardapio());
+        when(querySpec.list()).thenReturn(Arrays.asList(mockItemCardapio()));
 
         List<ItemCardapio> result = repository.buscarTodosItens(1, 0);
 
@@ -130,7 +130,7 @@ class ItemCardapioRepositoryImplTest {
         when(statementSpec.param("size", 1000)).thenReturn(paramSpec);
         when(paramSpec.param("offset", 0)).thenReturn(paramSpec);
         when(paramSpec.query(ItemCardapio.class)).thenReturn(querySpec);
-        when(querySpec.list()).thenReturn(mockListItemCardapio());
+        when(querySpec.list()).thenReturn(Arrays.asList(mockItemCardapio()));
 
         List<ItemCardapio> result = repository.buscarTodosItens(1000, 0);
 
@@ -142,7 +142,7 @@ class ItemCardapioRepositoryImplTest {
         when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
         when(statementSpec.param("nome", "Pasta Carbonara")).thenReturn(paramSpec);
         when(paramSpec.query(ItemCardapio.class)).thenReturn(querySpec);
-        when(querySpec.list()).thenReturn(mockListItemCardapio());
+        when(querySpec.list()).thenReturn(Arrays.asList(mockItemCardapio()));
 
         List<ItemCardapio> result = repository.buscarItemPorNome("Pasta Carbonara");
 
@@ -179,7 +179,7 @@ class ItemCardapioRepositoryImplTest {
         when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
         when(statementSpec.param("disponibilidade", "Sim")).thenReturn(paramSpec);
         when(paramSpec.query(ItemCardapio.class)).thenReturn(querySpec);
-        when(querySpec.list()).thenReturn(mockListItemCardapio());
+        when(querySpec.list()).thenReturn(Arrays.asList(mockItemCardapio()));
 
         List<ItemCardapio> result = repository.buscarItensPorDisponibilidade("Sim");
 
@@ -216,7 +216,7 @@ class ItemCardapioRepositoryImplTest {
         when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
         when(statementSpec.param("descricao", "Massa com ovos e bacon")).thenReturn(paramSpec);
         when(paramSpec.query(ItemCardapio.class)).thenReturn(querySpec);
-        when(querySpec.list()).thenReturn(mockListItemCardapio());
+        when(querySpec.list()).thenReturn(Arrays.asList(mockItemCardapio()));
 
         List<ItemCardapio> result = repository.buscarItemPorDescricao("Massa com ovos e bacon");
 

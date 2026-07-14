@@ -10,9 +10,9 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static com.raidstack.restmanager.helper.MocksHelper.mockListRestaurante;
 import static com.raidstack.restmanager.helper.MocksHelper.mockRestaurante;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,7 +42,7 @@ class RestauranteRepositoryImplTest {
         when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
         when(statementSpec.param("nome", "Bom Sabor")).thenReturn(paramSpec);
         when(paramSpec.query(Restaurante.class)).thenReturn(querySpec);
-        when(querySpec.list()).thenReturn(mockListRestaurante());
+        when(querySpec.list()).thenReturn(Arrays.asList(mockRestaurante()));
 
         List<Restaurante> result = repository.buscarRestaurantePorNome("Bom Sabor");
 
@@ -68,7 +68,7 @@ class RestauranteRepositoryImplTest {
         when(statementSpec.param("size", 10)).thenReturn(paramSpec);
         when(paramSpec.param("offset", 0)).thenReturn(paramSpec);
         when(paramSpec.query(Restaurante.class)).thenReturn(querySpec);
-        when(querySpec.list()).thenReturn(mockListRestaurante());
+        when(querySpec.list()).thenReturn(Arrays.asList(mockRestaurante()));
 
         List<Restaurante> result = repository.buscarTodosRestaurantes(10, 0);
 
@@ -93,7 +93,7 @@ class RestauranteRepositoryImplTest {
         when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
         when(statementSpec.param("tipoCozinha", "Italiana")).thenReturn(paramSpec);
         when(paramSpec.query(Restaurante.class)).thenReturn(querySpec);
-        when(querySpec.list()).thenReturn(mockListRestaurante());
+        when(querySpec.list()).thenReturn(Arrays.asList(mockRestaurante()));
 
         List<Restaurante> result = repository.buscarRestaurantePorTipoCozinha("Italiana");
 
@@ -119,7 +119,7 @@ class RestauranteRepositoryImplTest {
         when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
         when(statementSpec.param("horaInicio", hora)).thenReturn(paramSpec);
         when(paramSpec.query(Restaurante.class)).thenReturn(querySpec);
-        when(querySpec.list()).thenReturn(mockListRestaurante());
+        when(querySpec.list()).thenReturn(Arrays.asList(mockRestaurante()));
 
         List<Restaurante> result = repository.buscarPorHorario(hora);
 

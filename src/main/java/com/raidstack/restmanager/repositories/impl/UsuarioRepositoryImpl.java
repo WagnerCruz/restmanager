@@ -137,8 +137,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
 
     @Override
     public Optional<Usuario> validaUsuarioPorLoginESenha(UsuarioSenhaDTO usuarioDTO) {
-        return this.jdbcClient.sql("SELECT * FROM USUARIOS WHERE login = :login AND senha = :senha " +
-                        " AND senha = :senha")
+        return this.jdbcClient.sql("SELECT * FROM USUARIOS WHERE login = :login AND senha = :senha AND senha = :senha")
                 .param("login", usuarioDTO.login())
                 .param("senha", usuarioDTO.senha())
                 .query(Usuario.class)
