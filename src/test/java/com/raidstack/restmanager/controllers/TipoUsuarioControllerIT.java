@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -16,9 +17,11 @@ import static org.hamcrest.Matchers.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
-@Sql(scripts = {"classpath:schema_tipo_usuario.sql", "classpath:insert_tipo_usuario.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql(scripts = "classpath:cleanup_tipo_usuario.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(scripts = "/scripts/create_db.sql", executionPhase = ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(scripts = "/scripts/drop_db.sql", executionPhase = ExecutionPhase.AFTER_TEST_CLASS)
+@Sql(scripts = "/scripts/insert_tipo_usuario.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = "/scripts/cleanup_tipo_usuario.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+@TestPropertySource(locations = "classpath:application-test.properties")
 class TipoUsuarioControllerIT {
 
     @LocalServerPort
@@ -105,7 +108,7 @@ class TipoUsuarioControllerIT {
     }
 
     @Test
-    @Sql(scripts = "classpath:cleanup_tipo_usuario.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:scripts/cleanup_tipo_usuario.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     void endpoints_semBanco_deveRetornar500() {
         given()
         .when()
