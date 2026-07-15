@@ -96,8 +96,8 @@ class TipoUsuarioRepositoryImplTest {
     @Test
     void criarNovoTipoUsuario_deveRetornarInt() {
         TipoUsuario t = mock(TipoUsuario.class);
-        when(t.getNome_tipo_usuario()).thenReturn("nome");
-        when(jdbcClient.sql("INSERT INTO item_usuario (nome_tipo_usuario) VALUES (:nome)").param("nome", "nome").update()).thenReturn(1);
+        when(t.getNome_tipo()).thenReturn("nome");
+        when(jdbcClient.sql("INSERT INTO tipo_usuario (nome_tipo) VALUES (:nome)").param("nome", "nome").update()).thenReturn(1);
 
         Integer r = repository.criarNovoTipoUsuario(t);
         assertEquals(1, r);
@@ -106,8 +106,8 @@ class TipoUsuarioRepositoryImplTest {
     @Test
     void criarNovoTipoUsuario_devePropagarExcecao() {
         TipoUsuario t = mock(TipoUsuario.class);
-        when(t.getNome_tipo_usuario()).thenReturn("x");
-        when(jdbcClient.sql("INSERT INTO item_usuario (nome_tipo_usuario) VALUES (:nome)").param("nome", "x").update())
+        when(t.getNome_tipo()).thenReturn("x");
+        when(jdbcClient.sql("INSERT INTO tipo_usuario (nome_tipo) VALUES (:nome)").param("nome", "x").update())
                 .thenThrow(new RuntimeException("fail"));
 
         RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.criarNovoTipoUsuario(t));
@@ -118,8 +118,8 @@ class TipoUsuarioRepositoryImplTest {
     void atualizarTipoUsuario_deveRetornarInt() {
         TipoUsuario t = mock(TipoUsuario.class);
         when(t.getId()).thenReturn(7L);
-        when(t.getNome_tipo_usuario()).thenReturn("n");
-        when(jdbcClient.sql("UPDATE item_usuario SET nome_tipo_usuario= :nome WHERE id = :id").param("id", 7L).param("nome", "n").update()).thenReturn(1);
+        when(t.getNome_tipo()).thenReturn("n");
+        when(jdbcClient.sql("UPDATE item_usuario SET nome_tipo= :nome WHERE id = :id").param("id", 7L).param("nome", "n").update()).thenReturn(1);
 
         Integer r = repository.atualizarTipoUsuario(t);
         assertEquals(1, r);
