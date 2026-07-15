@@ -129,7 +129,7 @@ class ItemCardapioControllerTest {
 
         ResponseEntity<Void> response = controller.atualizarItemCardapio(atualizarDTO);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(service, times(1)).atualizarItemCardapio(atualizarDTO);
     }
 
@@ -139,7 +139,7 @@ class ItemCardapioControllerTest {
 
         ResponseEntity<Void> response = controller.deletarItemCardapio(atualizarDTO);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(service, times(1)).deletarItemCardapio(atualizarDTO);
     }
 
@@ -153,7 +153,7 @@ class ItemCardapioControllerTest {
     }
 
     private ItemCardapioBuscarDTO criarBuscarDTO(String nome, String descricao, Double valor) {
-        return new ItemCardapioBuscarDTO(nome, descricao, valor);
+        return new ItemCardapioBuscarDTO(null, nome, descricao, valor);
     }
 
     private ItemCardapioCriarDTO criarCriarDTO(String nome, String descricao, Double valor, String disponibilidade, String imagem) {

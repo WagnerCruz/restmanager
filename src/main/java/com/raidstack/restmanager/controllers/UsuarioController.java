@@ -9,6 +9,7 @@ import com.raidstack.restmanager.vo.UsuarioVO;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,7 +61,7 @@ public class UsuarioController {
         LOGGER.info("Cria um novo usuário com o login: {}", usuarioDTO.login());
         usuarioService.criarUsuario(usuarioDTO);
         LOGGER.info("Usuário criado com sucesso. Login: {}", usuarioDTO.login());
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping
@@ -83,7 +84,7 @@ public class UsuarioController {
     public ResponseEntity<Void> deletarUsuario(@RequestBody UsuarioAtualizarDTO usuarioDTO) {
         LOGGER.info("Deleta usuário com ID {}", usuarioDTO.id());
         usuarioService.deletarUsuario(usuarioDTO);
-        LOGGER.info("Successfully deleted usuario with id {}", usuarioDTO.id());
+        LOGGER.info("Usuário deletado com sucesso Id: {}", usuarioDTO.id());
         return ResponseEntity.ok().build();
     }
 }

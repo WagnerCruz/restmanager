@@ -35,7 +35,7 @@ public class ItemCardapioRepositoryImpl implements ItemCardapioRepository {
 
     @Override
     public List<ItemCardapio> buscarItemPorNome(String nome) {
-        return this.jdbcClient.sql("SELECT * FROM item_cardapio WHERE nome = :nome")
+        return this.jdbcClient.sql("SELECT * FROM item_cardapio WHERE nome_item = :nome")
                 .param("nome", nome)
                 .query(ItemCardapio.class)
                 .list();

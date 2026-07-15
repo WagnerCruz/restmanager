@@ -339,7 +339,7 @@ class ItemCardapioServiceTest {
     }
 
     private ItemCardapioBuscarDTO criarItemCardapioBuscarDTO(String nome, String descricao, Double valor) {
-        return new ItemCardapioBuscarDTO(nome, descricao, valor);
+        return new ItemCardapioBuscarDTO(null, nome, descricao, valor);
     }
 
     private ItemCardapioCriarDTO criarItemCardapioCriarDTO(String nome, String descricao, Double valor, String disponibilidade, String imagem) {

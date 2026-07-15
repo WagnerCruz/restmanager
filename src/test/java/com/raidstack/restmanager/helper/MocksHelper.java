@@ -1,5 +1,7 @@
 package com.raidstack.restmanager.helper;
 
+import com.raidstack.restmanager.dtos.ItemCardapioDTO.ItemCardapioAtualizarDTO;
+import com.raidstack.restmanager.dtos.ItemCardapioDTO.ItemCardapioCriarDTO;
 import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioAtualizarDTO;
 import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioCriarDTO;
 import com.raidstack.restmanager.entity.ItemCardapio;
@@ -87,6 +89,25 @@ public abstract class MocksHelper {
                 123,
                 "N"
         );
+    }
+
+        public static ItemCardapioCriarDTO mockItemCardapioCriarDTO() {
+        return new ItemCardapioCriarDTO(
+                "Pizza",
+                "Deliciosa",
+                30.0,
+                "Disponíve'l",
+                "img.jpg");
+    }
+
+    public static ItemCardapioAtualizarDTO mockItemCardapioAtualizarDTO(Long id) {
+        return new ItemCardapioAtualizarDTO(
+                id == null ? 1L : id,
+                "Pizza",
+                "Deliciosa",
+                30.0,
+                "Disponível",
+                "img.jpg");
     }
 
 }
