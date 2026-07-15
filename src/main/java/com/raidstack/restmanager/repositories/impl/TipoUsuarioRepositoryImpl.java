@@ -30,7 +30,7 @@ public class TipoUsuarioRepositoryImpl implements TipoUsuarioRepository {
     public List<TipoUsuario> buscarTodosTipoUsuario(int size, int offset) {
         return this.jdbcClient.sql("SELECT * FROM tipo_usuario LIMIT :size OFFSET :offset")
                 .param("size", size)
-                .param("TipoUsuario", offset > 0 ? offset-1 : offset)
+                .param("offset", offset > 0 ? offset-1 : offset)
                 .query(TipoUsuario.class)
                 .list();
     }
