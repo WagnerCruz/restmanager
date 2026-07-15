@@ -76,7 +76,7 @@ public class ItemCardapioController {
         LOGGER.info("Atualizando item de cardápio: {}", itemCardapioAtualizarDTO.nome_item());
         itemCardapioService.atualizarItemCardapio(itemCardapioAtualizarDTO);
         LOGGER.info("Item de cardápio atualizado com sucesso");
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping
@@ -84,6 +84,6 @@ public class ItemCardapioController {
         LOGGER.info("Deletando item de cardápio: {}", itemCardapioAtualizarDTO.nome_item());
         itemCardapioService.deletarItemCardapio(itemCardapioAtualizarDTO);
         LOGGER.info("Item de cardápio deletado com sucesso");
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

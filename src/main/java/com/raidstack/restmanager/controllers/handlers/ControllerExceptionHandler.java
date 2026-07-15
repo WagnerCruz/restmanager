@@ -44,4 +44,14 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(status).body(problem);
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ProblemDetail> handlerRuntimeException(RuntimeException exception) {
+        var status = HttpStatus.NOT_FOUND;
+        ProblemDetail problem = ProblemDetail.forStatus(status);
+        problem.setTitle("Erro interno do servidor");
+        problem.setDetail(exception.getMessage());
+        problem.setProperty("timestamp", LocalDateTime.now());
+        return ResponseEntity.status(status).body(problem);
+    }
+
 }
