@@ -32,10 +32,10 @@ CREATE TABLE IF NOT EXISTS ITEM_CARDAPIO(
                               disponibilidade varchar(100) not null,
                               imagem_prato text);
 
+
 CREATE TABLE IF NOT EXISTS TIPO_USUARIO(
     id int generated always as identity primary key,
-    nome_tipo_usuario varchar(255) not null
-  );
+    nome_tipo varchar(255) not null);
 
 
 

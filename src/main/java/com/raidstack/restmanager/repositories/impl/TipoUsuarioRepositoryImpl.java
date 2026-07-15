@@ -45,23 +45,23 @@ public class TipoUsuarioRepositoryImpl implements TipoUsuarioRepository {
 
     @Override
     public Integer criarNovoTipoUsuario(TipoUsuario tipoUsuario) {
-        return this.jdbcClient.sql("INSERT INTO item_usuario (nome_tipo_usuario) " +
+        return this.jdbcClient.sql("INSERT INTO tipo_usuario (nome_tipo) " +
                         "VALUES (:nome)")
-                .param("nome", tipoUsuario.getNome_tipo_usuario())
+                .param("nome", tipoUsuario.getNome_tipo())
                 .update();
     }
 
     @Override
     public Integer atualizarTipoUsuario(TipoUsuario tipoUsuario) {
-        return this.jdbcClient.sql("UPDATE item_usuario SET nome_tipo_usuario= :nome WHERE id = :id")
+        return this.jdbcClient.sql("UPDATE tipo_usuario SET nome_tipo= :nome WHERE id = :id")
                 .param("id", tipoUsuario.getId())
-                .param("nome", tipoUsuario.getNome_tipo_usuario())
+                .param("nome", tipoUsuario.getNome_tipo())
                 .update();
     }
 
     @Override
     public Integer deletarTipoUsuario(Long id) {
-        return this.jdbcClient.sql("DELETE FROM item_usuario WHERE id = :id")
+        return this.jdbcClient.sql("DELETE FROM tipo_usuario WHERE id = :id")
                 .param("id", id)
                 .update();
     }

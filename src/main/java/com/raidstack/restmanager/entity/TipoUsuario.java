@@ -19,5 +19,5 @@ public class TipoUsuario {
 
     @Id
     private Long id;
-    private String nome_tipo_usuario;
+    private String nome_tipo;
 }
