@@ -1,0 +1,789 @@
+{
+  "info": {
+    "_postman_id": "3226076a-8509-4ba9-9161-904f52524c95",
+    "name": "Fase 1 - Tech Challenge - RestManager",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "21141157"
+  },
+  "item": [
+    {
+      "name": "Usuario - Criar",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nome\": \"Teste Usuario\",\r\n    \"cpf\": \"57269862028\",\r\n    \"email\": \"teste@teste.com\",\r\n    \"login\": \"v\",\r\n    \"senha\": \"123456789\",\r\n    \"endereco\": \"Rua Teste, Bairro Testando, Cidade Teste - SP\",\r\n    \"numero\": 1000,\r\n    \"flagProprietario\": \"true\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8099/v1/usuarios",
+          "host": [
+            "localhost"
+          ],
+          "port": "8099",
+          "path": [
+            "v1",
+            "usuarios"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Usuario - Criar - Proprietário - Sucesso",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Teste Usuario PROPRIETARIO segundo\",\r\n    \"cpf\": \"07367103024\",\r\n    \"email\": \"teste.proprietario@teste.com\",\r\n    \"login\": \"proprietario2\",\r\n    \"senha\": \"123456789\",\r\n    \"endereco\": \"Rua Teste, Bairro Testando, Cidade Teste - SP\",\r\n    \"numero\": 1000,\r\n    \"flagProprietario\": \"true\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "Usuario - Criar - Cliente - Sucesso",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Teste Usuario CLIENTE\",\r\n    \"cpf\": \"00724842098\",\r\n    \"email\": \"teste.cliente@teste.com\",\r\n    \"login\": \"cliente\",\r\n    \"senha\": \"123456789\",\r\n    \"endereco\": \"Rua Teste, Bairro Testando, Cidade Teste - SP\",\r\n    \"numero\": 1000,\r\n    \"flagProprietario\": \"false\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "Usuario - Criar - Erro: Dados Faltantes",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "Usuario - Criar - Erro: E-mail e CPF Inválidos",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Teste Usuario\",\r\n    \"cpf\": \"12345678900\",\r\n    \"email\": \"testeteste.com\",\r\n    \"login\": \"teste\",\r\n    \"senha\": \"123456789\",\r\n    \"endereco\": \"Rua Teste, Bairro Testando, Cidade Teste - SP\",\r\n    \"numero\": 1000,\r\n    \"flagProprietario\": \"true\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "Usuario - Criar - Erro: Validar Credenciais Usuário",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Teste Usuario\",\r\n    \"cpf\": \"00724842098\",\r\n    \"email\": \"teste@teste.com\",\r\n    \"login\": \"clienteNovo\",\r\n    \"senha\": \"123456789\",\r\n    \"endereco\": \"Rua Teste, Bairro Testando, Cidade Teste - SP\",\r\n    \"numero\": 1000,\r\n    \"flagProprietario\": \"true\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Usuario - Lista",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8099/v1/usuarios",
+          "host": [
+            "localhost"
+          ],
+          "port": "8099",
+          "path": [
+            "v1",
+            "usuarios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Usuario - Atualizar",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Teste Usuario CLIENTE ATUALIZADO\",\r\n    \"cpf\": \"00724842098\",\r\n    \"email\": \"teste.atualizado@teste.com\",\r\n    \"login\": \"clienteNovo\",\r\n    \"endereco\": \"Rua Teste Atualizado, Bairro Testando, Cidade Teste - SP\",\r\n    \"numero\": 1001,\r\n    \"flagProprietario\": \"false\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8099/v1/usuarios",
+          "host": [
+            "localhost"
+          ],
+          "port": "8099",
+          "path": [
+            "v1",
+            "usuarios"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Usuario - Atualizar - Sucesso",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 7,\r\n    \"nome\": \"Teste Usuario CLIENTE ATUALIZADO\",\r\n    \"cpf\": \"00724842098\",\r\n    \"email\": \"teste.atualizado@teste.com\",\r\n    \"login\": \"clienteNovo\",\r\n    \"endereco\": \"Rua Teste Atualizado, Bairro Testando, Cidade Teste - SP\",\r\n    \"numero\": 1001,\r\n    \"flagProprietario\": \"false\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "Usuario - Atualizar - Erro: Dados Faltantes",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "Usuario - Atualizar - Erro: E-mail e CPF Inválidos",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 7,\r\n    \"nome\": \"Teste Usuario CLIENTE ATUALIZADO\",\r\n    \"cpf\": \"12345678900\",\r\n    \"email\": \"teste.atualizadoteste.com\",\r\n    \"login\": \"clienteNovo\",\r\n    \"endereco\": \"Rua Teste Atualizado, Bairro Testando, Cidade Teste - SP\",\r\n    \"numero\": 1001,\r\n    \"flagProprietario\": \"false\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [
+            {
+              "expires": "Invalid Date",
+              "domain": "",
+              "path": ""
+            }
+          ],
+          "body": ""
+        },
+        {
+          "name": "Usuario - Atualizar - Erro: Validar Credenciais Usuário",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 7,\r\n    \"nome\": \"Teste Usuario CLIENTE ATUALIZADO\",\r\n    \"cpf\": \"15892688062\",\r\n    \"email\": \"teste.proprietario@teste.com\",\r\n    \"login\": \"proprietario\",\r\n    \"endereco\": \"Rua Teste Atualizado, Bairro Testando, Cidade Teste - SP\",\r\n    \"numero\": 1001,\r\n    \"flagProprietario\": \"false\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Usuario - Atualizar Senha",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n        \"id\": 1,\r\n        \"cpf\": \"00724842098\",\r\n        \"senha\": \"Testando Nova Senha\"\r\n    }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8099/v1/usuarios/senha",
+          "host": [
+            "localhost"
+          ],
+          "port": "8099",
+          "path": [
+            "v1",
+            "usuarios",
+            "senha"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Usuario - Atualizar Senha - Sucesso",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n        \"id\": 6,\r\n        \"cpf\": \"15892688062\",\r\n        \"senha\": \"123456789\"\r\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios/senha",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios",
+                "senha"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "Usuario - Atualizar Senha - Erro: CPF Inválido",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n        \"id\": 3,\r\n        \"cpf\": \"98765432100\",\r\n        \"senha\": \"Testando Nova Senha\"\r\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios/senha",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios",
+                "senha"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "Usuario - Atualizar Senha - Erro: Login e Senha Inválidos",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n        \"id\": 3,\r\n        \"cpf\": \"98765432100\",\r\n        \"senha\": \"Testando Nova Senha\"\r\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios/senha",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios",
+                "senha"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Usuario - Busca por Nome",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nome\": \"Teste Usuario CLIENTE ATUALIZADO\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8099/v1/usuarios/nome",
+          "host": [
+            "localhost"
+          ],
+          "port": "8099",
+          "path": [
+            "v1",
+            "usuarios",
+            "nome"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Usuario - Busca por Nome - Sucesso",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Teste\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios/nome",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios",
+                "nome"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "Usuario - Busca por Nome - Erro Usuário Não Encontrado",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"NÃO ENCONTRADO\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios/nome",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios",
+                "nome"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Usuario - Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"login\": \"teste\",\r\n    \"senha\": \"Testando Nova Senha\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8099/v1/usuarios/login",
+          "host": [
+            "localhost"
+          ],
+          "port": "8099",
+          "path": [
+            "v1",
+            "usuarios",
+            "login"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Usuario - Login - Erro: Login e Senha Incorretos",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"login\": \"cliente\",\r\n    \"senha\": \"Testando Nova Senha\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios/login",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios",
+                "login"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "Usuario - Login - Sucesso",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"login\": \"proprietario2\",\r\n    \"senha\": \"123456789\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios/login",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios",
+                "login"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Usuario - Deletar",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"cpf\": \"12345678901\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8099/v1/usuarios",
+          "host": [
+            "localhost"
+          ],
+          "port": "8099",
+          "path": [
+            "v1",
+            "usuarios"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Usuario - Deletar - Sucesso",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"cpf\": \"98765432100\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "Usuario - Deletar - Erro: Usuário Não Encontrado",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"cpf\": \"12345678901\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8099/v1/usuarios",
+              "host": [
+                "localhost"
+              ],
+              "port": "8099",
+              "path": [
+                "v1",
+                "usuarios"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "Text",
+          "header": [],
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    }
+  ]
+}

@@ -3,13 +3,13 @@ info:
   title: OpenAPI definition
   version: v0
 servers:
-- url: http://localhost:8099
-  description: Generated server url
+  - url: http://localhost:8099
+    description: Generated server url
 paths:
   /v1/usuarios:
     get:
       tags:
-      - usuario-controller
+        - usuario-controller
       operationId: getUsuarios
       responses:
         "200":
@@ -22,7 +22,7 @@ paths:
                   $ref: "#/components/schemas/UsuarioVO"
     put:
       tags:
-      - usuario-controller
+        - usuario-controller
       operationId: atualizarUsuario
       requestBody:
         content:
@@ -35,7 +35,7 @@ paths:
           description: OK
     post:
       tags:
-      - usuario-controller
+        - usuario-controller
       operationId: criarUsuario
       requestBody:
         content:
@@ -48,7 +48,7 @@ paths:
           description: OK
     delete:
       tags:
-      - usuario-controller
+        - usuario-controller
       operationId: deletarUsuario
       requestBody:
         content:
@@ -62,7 +62,7 @@ paths:
   /v1/usuarios/senha:
     put:
       tags:
-      - usuario-controller
+        - usuario-controller
       operationId: atualizarSenhaUsuario
       requestBody:
         content:
@@ -73,10 +73,104 @@ paths:
       responses:
         "200":
           description: OK
+  /v1/tipousuario:
+    put:
+      tags:
+        - tipo-usuario-controller
+      operationId: atualizarTipoUsuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TipoUsuarioAtualizarDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+    post:
+      tags:
+        - tipo-usuario-controller
+      operationId: cadastrarTipoUsuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TipoUsuarioCriarDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags:
+        - tipo-usuario-controller
+      operationId: deletarTipoUsuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TipoUsuarioAtualizarDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+  /v1/restaurantes/atualizarrestaurante:
+    put:
+      tags:
+        - restaurante-controller
+      operationId: atualizarRestaurante
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RestauranteAtualizarDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+  /v1/itemcardapio:
+    put:
+      tags:
+        - item-cardapio-controller
+      operationId: atualizarItemCardapio
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemCardapioAtualizarDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+    post:
+      tags:
+        - item-cardapio-controller
+      operationId: cadastrarItemCardapio
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemCardapioCriarDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags:
+        - item-cardapio-controller
+      operationId: deletarItemCardapio
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemCardapioAtualizarDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
   /v1/usuarios/nome:
     post:
       tags:
-      - usuario-controller
+        - usuario-controller
       operationId: getUsuarioByNome
       requestBody:
         content:
@@ -90,11 +184,13 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/UsuarioVO"
+                type: array
+                items:
+                  $ref: "#/components/schemas/UsuarioVO"
   /v1/usuarios/login:
     post:
       tags:
-      - usuario-controller
+        - usuario-controller
       operationId: getValidaUsuario
       requestBody:
         content:
@@ -105,6 +201,196 @@ paths:
       responses:
         "200":
           description: OK
+  /v1/restaurantes/cadastrarrestaurante:
+    post:
+      tags:
+        - restaurante-controller
+      operationId: cadastrarRestaurante
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RestauranteCriarDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+  /v1/tipousuario/todos:
+    get:
+      tags:
+        - tipo-usuario-controller
+      operationId: pesquisarTodosTiposUsuario
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TipoUsuarioBuscarDTO"
+  /v1/tipousuario/nome:
+    get:
+      tags:
+        - tipo-usuario-controller
+      operationId: pesquisarTiposUsuarioPorNome
+      parameters:
+        - name: nome
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TipoUsuarioBuscarDTO"
+  /v1/restaurantes/todos:
+    get:
+      tags:
+        - restaurante-controller
+      operationId: pesquisarTodosRestaurantes
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RestauranteBuscarDTO"
+  /v1/restaurantes/portipocozinha:
+    get:
+      tags:
+        - restaurante-controller
+      operationId: pesquisarRestaurantesPorTipoCozinha
+      parameters:
+        - name: tipoCozinha
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RestauranteBuscarDTO"
+  /v1/restaurantes/porhorario:
+    get:
+      tags:
+        - restaurante-controller
+      operationId: pesquisarRestaurantesPorHorario
+      parameters:
+        - name: horario
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RestauranteBuscarDTO"
+  /v1/itemcardapio/todos:
+    get:
+      tags:
+        - item-cardapio-controller
+      operationId: pesquisarTodosItensCardapio
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ItemCardapioBuscarDTO"
+  /v1/itemcardapio/nome:
+    get:
+      tags:
+        - item-cardapio-controller
+      operationId: pesquisarItensPorNome
+      parameters:
+        - name: nome
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ItemCardapioBuscarDTO"
+  /v1/itemcardapio/disponibilidade:
+    get:
+      tags:
+        - item-cardapio-controller
+      operationId: pesquisarItensPorDisponibilidade
+      parameters:
+        - name: disponibilidade
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ItemCardapioBuscarDTO"
+  /v1/itemcardapio/descricao:
+    get:
+      tags:
+        - item-cardapio-controller
+      operationId: pesquisarItensPorDescricao
+      parameters:
+        - name: descricao
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ItemCardapioBuscarDTO"
+  /v1/restaurantes:
+    delete:
+      tags:
+        - restaurante-controller
+      operationId: removerRestaurante
+      parameters:
+        - name: restauranteAtualizarDTO
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/RestauranteAtualizarDTO"
+      responses:
+        "200":
+          description: OK
 components:
   schemas:
     UsuarioAtualizarDTO:
@@ -112,13 +398,14 @@ components:
       properties:
         id:
           type: integer
-          format: int32
+          format: int64
         nome:
           type: string
         cpf:
           type: string
         email:
           type: string
+          format: email
         login:
           type: string
         endereco:
@@ -129,7 +416,10 @@ components:
         flagProprietario:
           type: string
       required:
-      - nome
+        - cpf
+        - id
+        - login
+        - nome
     UsuarioSenhaDTO:
       type: object
       properties:
@@ -142,8 +432,66 @@ components:
           type: string
         senha:
           type: string
+    TipoUsuarioAtualizarDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nome_tipo:
+          type: string
       required:
-      - senha
+        - id
+        - nome_tipo
+    RestauranteAtualizarDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nome:
+          type: string
+        endereco:
+          type: string
+        tipoCozinha:
+          type: string
+        horaInicio:
+          type: string
+          format: date-time
+        horaFim:
+          type: string
+          format: date-time
+      required:
+        - endereco
+        - horaFim
+        - horaInicio
+        - id
+        - nome
+        - tipoCozinha
+    ItemCardapioAtualizarDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nome_item:
+          type: string
+        descricao:
+          type: string
+        valor_item:
+          type: number
+          format: double
+        disponibilidade:
+          type: string
+        imagem_prato:
+          type: string
+      required:
+        - descricao
+        - disponibilidade
+        - id
+        - imagem_prato
+        - nome_item
+        - valor_item
     UsuarioCriarDTO:
       type: object
       properties:
@@ -153,6 +501,7 @@ components:
           type: string
         email:
           type: string
+          format: email
         login:
           type: string
         senha:
@@ -165,7 +514,11 @@ components:
         flagProprietario:
           type: string
       required:
-      - nome
+        - cpf
+        - email
+        - login
+        - nome
+        - senha
     UsuarioBuscarDTO:
       type: object
       properties:
@@ -202,3 +555,76 @@ components:
         dataAtualizacao:
           type: string
           format: date-time
+    TipoUsuarioCriarDTO:
+      type: object
+      properties:
+        nome_tipo:
+          type: string
+      required:
+        - nome_tipo
+    RestauranteCriarDTO:
+      type: object
+      properties:
+        nome:
+          type: string
+        endereco:
+          type: string
+        tipoCozinha:
+          type: string
+        horaInicio:
+          type: string
+          format: date-time
+        horaFim:
+          type: string
+          format: date-time
+      required:
+        - endereco
+        - horaFim
+        - horaInicio
+        - nome
+        - tipoCozinha
+    ItemCardapioCriarDTO:
+      type: object
+      properties:
+        nome_item:
+          type: string
+        descricao:
+          type: string
+        valor_item:
+          type: number
+          format: double
+        disponibilidade:
+          type: string
+        imagem_prato:
+          type: string
+      required:
+        - descricao
+        - disponibilidade
+        - imagem_prato
+        - nome_item
+        - valor_item
+    TipoUsuarioBuscarDTO:
+      type: object
+      properties:
+        nome_tipo:
+          type: string
+    RestauranteBuscarDTO:
+      type: object
+      properties:
+        nome:
+          type: string
+        tipoCozinha:
+          type: string
+        horarioBusca:
+          type: string
+          format: date-time
+    ItemCardapioBuscarDTO:
+      type: object
+      properties:
+        nome_item:
+          type: string
+        descricao:
+          type: string
+        valor_item:
+          type: number
+          format: double

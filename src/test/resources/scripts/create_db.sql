@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS usuarios (
+CREATE TABLE IF NOT EXISTS USUARIOS (
    id BIGSERIAL PRIMARY KEY,
    nome VARCHAR(255) NOT NULL,
    cpf VARCHAR(14) NOT NULL UNIQUE,
@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS RESTAURANTES(
                              nome varchar(255) not null,
                              endereco varchar(255) not null,
                              tipo_cozinha varchar(255) not null,
-                             horario_inicio_functo time not null default '08:00',
-                             horario_fim_functo time not null default '18:00',
+                             horario_inicio_functo time not null default '08:00:00',
+                             horario_fim_functo time not null default '18:00:00',
                              id_usuario INT not null,
                              constraint  fk_id_usuario
                                  FOREIGN KEY (id_usuario)
@@ -32,11 +32,7 @@ CREATE TABLE IF NOT EXISTS ITEM_CARDAPIO(
                               disponibilidade varchar(100) not null,
                               imagem_prato text);
 
-
 CREATE TABLE IF NOT EXISTS TIPO_USUARIO(
-    id int generated always as identity primary key,
-    nome_tipo varchar(255) not null);
-
-
-
+                               id int generated always as identity primary key,
+                               nome_tipo varchar(255) not null);
 

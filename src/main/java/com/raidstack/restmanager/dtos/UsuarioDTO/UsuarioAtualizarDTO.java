@@ -1,4 +1,4 @@
-package com.raidstack.restmanager.dtos;
+package com.raidstack.restmanager.dtos.UsuarioDTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -6,15 +6,15 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import java.io.Serializable;
 
-public record UsuarioCriarDTO(
+public record UsuarioAtualizarDTO(
 
         @NotNull(message = "ID do usuário é obrigatório")
-        Integer id,
+        Long id,
 
         @NotNull(message = "Nome é obrigatório")
         String nome,
 
-        @CPF(message = "CPF informado é inválido")
+        @CPF(message = "CPF é inválido")
         @NotNull(message = "CPF é obrigatório")
         String cpf,
 
@@ -23,9 +23,6 @@ public record UsuarioCriarDTO(
 
         @NotNull(message = "Login de usuário é obrigatório")
         String login,
-
-        @NotNull(message = "Senha é obrigatória")
-        String senha,
 
         String endereco,
         Integer numero,

@@ -1,4 +1,4 @@
-package com.raidstack.restmanager.dtos;
+package com.raidstack.restmanager.dtos.UsuarioDTO;
 
 public record UsuarioBuscarDTO(
         Integer id,

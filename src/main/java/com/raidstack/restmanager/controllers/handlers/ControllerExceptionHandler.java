@@ -1,6 +1,5 @@
-package com.raidstack.restmanager.controllers.hadlers;
+package com.raidstack.restmanager.controllers.handlers;
 
-import com.raidstack.restmanager.services.exceptions.ResourceBadRequestException;
 import com.raidstack.restmanager.services.exceptions.ResourceExceptionDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -23,6 +23,9 @@ public class ControllerExceptionHandler {
         problem.setTitle(exception.getTitulo());
         problem.setDetail(exception.getMessage());
         problem.setProperty("timestamp", LocalDateTime.now());
+        if (Objects.nonNull(exception.getErrors()) && !exception.getErrors().isEmpty()) {
+            problem.setProperty("errors", exception.getErrors());
+        }
         return ResponseEntity.status(exception.getHttpStatus()).body(problem);
     }
 
@@ -37,6 +40,16 @@ public class ControllerExceptionHandler {
             errors.add(error.getField() + ": " + error.getDefaultMessage());
         }
         problem.setProperty("errors", errors);
+        problem.setProperty("timestamp", LocalDateTime.now());
+        return ResponseEntity.status(status).body(problem);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ProblemDetail> handlerRuntimeException(RuntimeException exception) {
+        var status = HttpStatus.NOT_FOUND;
+        ProblemDetail problem = ProblemDetail.forStatus(status);
+        problem.setTitle("Erro interno do servidor");
+        problem.setDetail(exception.getMessage());
         problem.setProperty("timestamp", LocalDateTime.now());
         return ResponseEntity.status(status).body(problem);
     }

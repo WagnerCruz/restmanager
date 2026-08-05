@@ -1,18 +1,18 @@
 package com.raidstack.restmanager.controllers;
 
-import com.raidstack.restmanager.dtos.UsuarioAtualizarDTO;
-import com.raidstack.restmanager.dtos.UsuarioBuscarDTO;
-import com.raidstack.restmanager.dtos.UsuarioCriarDTO;
-import com.raidstack.restmanager.dtos.UsuarioSenhaDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioAtualizarDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioBuscarDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioCriarDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioSenhaDTO;
 import com.raidstack.restmanager.services.UsuarioService;
 import com.raidstack.restmanager.vo.UsuarioVO;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,11 +49,11 @@ public class UsuarioController {
     }
 
     @PostMapping("/nome")
-    public ResponseEntity<UsuarioVO> getUsuarioByNome(@RequestBody UsuarioBuscarDTO usuarioDTO) {
+    public ResponseEntity<List<UsuarioVO>> getUsuarioByNome(@RequestBody UsuarioBuscarDTO usuarioDTO) {
         LOGGER.info("Retorna os dados do usuário de acordo com o nome. {}", usuarioDTO.nome());
-        UsuarioVO usuarioVO = usuarioService.findByNome(usuarioDTO.nome());
+        List<UsuarioVO> usuariosVO = usuarioService.findByNome(usuarioDTO.nome());
         LOGGER.info("Usuário encontrado com sucesso. {}", usuarioDTO.nome());
-        return ResponseEntity.ok(usuarioVO);
+        return ResponseEntity.ok(usuariosVO);
     }
 
     @PostMapping
@@ -61,7 +61,7 @@ public class UsuarioController {
         LOGGER.info("Cria um novo usuário com o login: {}", usuarioDTO.login());
         usuarioService.criarUsuario(usuarioDTO);
         LOGGER.info("Usuário criado com sucesso. Login: {}", usuarioDTO.login());
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping
@@ -73,7 +73,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/senha")
-    public ResponseEntity<Void> atualizarSenhaUsuario(@RequestBody UsuarioSenhaDTO usuarioDTO) {
+    public ResponseEntity<Void> atualizarSenhaUsuario(@RequestBody @Valid UsuarioSenhaDTO usuarioDTO) {
         LOGGER.info("Atualiza senha do usuário do id: {}", usuarioDTO.id());
         usuarioService.atualizarSenhaUsuario(usuarioDTO);
         LOGGER.info("Senha atualizado com sucesso Id: {}", usuarioDTO.id());
@@ -84,7 +84,7 @@ public class UsuarioController {
     public ResponseEntity<Void> deletarUsuario(@RequestBody UsuarioAtualizarDTO usuarioDTO) {
         LOGGER.info("Deleta usuário com ID {}", usuarioDTO.id());
         usuarioService.deletarUsuario(usuarioDTO);
-        LOGGER.info("Successfully deleted usuario with id {}", usuarioDTO.id());
+        LOGGER.info("Usuário deletado com sucesso Id: {}", usuarioDTO.id());
         return ResponseEntity.ok().build();
     }
 }

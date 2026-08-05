@@ -1,7 +1,7 @@
 package com.raidstack.restmanager.mapper;
 
-import com.raidstack.restmanager.dtos.UsuarioAtualizarDTO;
-import com.raidstack.restmanager.dtos.UsuarioCriarDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioAtualizarDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioCriarDTO;
 import com.raidstack.restmanager.entity.Usuario;
 import com.raidstack.restmanager.vo.UsuarioVO;
 import org.mapstruct.Mapper;

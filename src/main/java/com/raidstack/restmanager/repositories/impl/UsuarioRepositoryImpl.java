@@ -1,9 +1,8 @@
 package com.raidstack.restmanager.repositories.impl;
 
-import com.raidstack.restmanager.dtos.UsuarioSenhaDTO;
+import com.raidstack.restmanager.dtos.UsuarioDTO.UsuarioSenhaDTO;
 import com.raidstack.restmanager.entity.Usuario;
 import com.raidstack.restmanager.repositories.UsuarioRepository;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -94,11 +93,27 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
     }
 
     @Override
-    public Optional<Usuario> buscarPorNome(String nome) {
-        return this.jdbcClient.sql("SELECT * FROM USUARIOS WHERE nome = :nome")
-                .param("nome", nome)
+    public Optional<Usuario> buscarPorCPF(String cpf) {
+        return this.jdbcClient.sql("SELECT * FROM USUARIOS WHERE cpf = :cpf")
+                .param("cpf", cpf)
                 .query(Usuario.class)
                 .optional();
+    }
+
+    @Override
+    public Optional<Usuario> buscarPorEmail(String email) {
+        return this.jdbcClient.sql("SELECT * FROM USUARIOS WHERE email = :email")
+                .param("email", email)
+                .query(Usuario.class)
+                .optional();
+    }
+
+    @Override
+    public List<Usuario> buscarPorNome(String nome) {
+        return this.jdbcClient.sql("SELECT * FROM USUARIOS WHERE LOWER(nome) LIKE :nome")
+                .param("nome", "%"+nome+"%")
+                .query(Usuario.class)
+                .list();
     }
 
      @Override
@@ -122,8 +137,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
 
     @Override
     public Optional<Usuario> validaUsuarioPorLoginESenha(UsuarioSenhaDTO usuarioDTO) {
-        return this.jdbcClient.sql("SELECT * FROM USUARIOS WHERE login = :login AND senha = :senha " +
-                        " AND senha = :senha")
+        return this.jdbcClient.sql("SELECT * FROM USUARIOS WHERE login = :login AND senha = :senha AND senha = :senha")
                 .param("login", usuarioDTO.login())
                 .param("senha", usuarioDTO.senha())
                 .query(Usuario.class)
